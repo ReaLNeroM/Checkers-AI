@@ -1,5 +1,5 @@
 public interface Action {
-	void toString();
+	String toString();
 	State getStartState();
 	State getEndState();
 }
