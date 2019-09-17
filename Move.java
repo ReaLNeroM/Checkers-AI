@@ -1,46 +1,40 @@
-import java.util.Arrays;
+import java.util.Pair;
 
 public class Move {
-//	private Board start;
-//	private Board finish;
-	private int[] start;
-	private int[] finish;
-	private Piece target;
-	private boolean type;//true = capture, false = move
-	
+	private Pair<Integer, Integer> initialPosition;
+	private Pair<Integer, Integer> targetPosition;
+	boolean isCapture;
+
 	/**
-	 * 
-	 * @param start an int array with the row and col coordinates
-	 * @param finish also an int array
-	 * @param type true for capture move, false otherwise
-	 * <h1>use isCapture() method to check if this move is a capture move</h1>
+	 *
+	 * @param initialPosition an int array with the row and col coordinates
+	 * @param targetPosition also an int array
+	 * @param isCapture true for capture move, false otherwise
+	 * <h1>use isCapture() method to check if this move  is a capture move</h1>
 	 * <h3>or I guess you could manually compute and see if the two locations are adjacent</h3>
 	 */
-	public Move(int[] start, int[] finish, boolean type) {
-		this.start = start;
-		this.finish = finish;
-		this.type = type;
+	public Move(Pair<Integer, Integer> initialPosition, Pair<Integer, Integer> targetPosition, boolean isCapture) {
+		this.initialPosition = initialPosition;
+		this.targetPosition = targetPosition;
+		this.isCapture = isCapture;
 	}
-	
-	public Move(int xStart, int yStart, int xFinish, int yFinish, boolean type) {
-		this(new int[] {xStart, yStart}, new int[] {xFinish, yFinish}, type);
-	}
-	
+
 	public boolean isCapture() {
-		return type;
+		return isCapture;
 	}
-	
-	public int[] getStart() {
-		return start;
+
+	public Pair<Integer, Integer> getInitialPosition() {
+		return initialPosition;
 	}
-	
-	public int[] getFinish() {
-		return finish;
+
+	public Pair<Integer, Integer> getTargetPosition() {
+		return targetPosition;
 	}
 
 	@Override
 	public String toString() {
-		return "Move [start=" + Arrays.toString(start) + ", finish=" + Arrays.toString(finish) + ", type=" + type + "]";
+		return "Move [initialPosition=" + Pair.toString(initialPosition) +
+				", targetPosition=" + Pair.toString(targetPosition) +
+				", isCapture=" + isCapture + "]";
 	}
-	
 }

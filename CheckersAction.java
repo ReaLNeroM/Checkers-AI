@@ -1,10 +1,17 @@
-public class CheckersAction implements Action {
-	private State[] intermediateStates;
+import java.util.Pair;
 
-	private ArrayList<Pair<Integer, Integer>> decodeMoveString(String moveDescription){
+public class CheckersAction implements Action {
+	private Move[] intermediateMoves;
+
+	private String coordinatesToString(Pair<Integer, Integer> coordinates){
+		Character rowCharacter = 'A' + v
+		return
+	}
+
+	private Move[] decodeMoveString(String moveDescription){
 		String[] namesOfCellsInMove = moveDescription.split("x|-");
 
-		ArrayList<Pair<Integer, Integer>> coordinatesOfCellsInMove =
+		Pair<Integer, Integer>[] coordinatesOfCellsInMove =
 			new ArrayList<Pair<Integer, Integer>>();
 
 		for(String nameOfCell : namesOfCellsInMove){
@@ -16,36 +23,19 @@ public class CheckersAction implements Action {
 		return coordinatesOfCellsInMove;
 	}
 
-	CheckersAction(State[] intermediateStates){
-		this.intermediateStates = intermediateStates;
+	CheckersAction(Move[] intermediateMoves){
+		this.intermediateMoves = intermediateMoves;
 	}
 
-	CheckersAction(State startingState, String moveDescription){
-		Board currentBoard = startingState.getBoard();
-
-		ArrayList<Pair<Integer, Integer>> coordinatesOfCellsInMove = decodeMoveString(moveDescription);
-
-		ArrayList<State> intermediateStates;
-		for(int i = 0; i < coordinatesOfCellsInMove.length() - 1; i++){
-			Pair<Integer, Integer>
-		}
-
-		this.intermediateStates = intermediateStates.toArray();
+	CheckersAction(String moveDescription){
+		this.intermediateMoves = decodeMoveString(moveDescription);
 	}
 
 	public String toString(){
 
 	}
 
-	boolean isValid(){
-
-	}
-
-	public State getStartState(){
-		return intermediateStates[0];
-	}
-
-	public State getEndState(){
-		return intermediateStates[intermediateStates.length() - 1];
+	public int getNumberOfCaptures(){
+		return intermediateMoves.length;
 	}
 }
