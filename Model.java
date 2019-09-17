@@ -1,9 +1,11 @@
 public interface Model {
-	private Actions ActionsImplementation;
-	private Result ResultImplementation;
-	private Cost CostImplementation;
-	private Utility UtilityImplementation;
-	private Heuristic HeuristicImplementation;
+	
+	//TODO: to be deleted
+	//	Actions ActionsImplementation;
+	//	Result ResultImplementation;
+	//	Cost CostImplementation;
+	//	Utility UtilityImplementation;
+	//	Heuristic HeuristicImplementation;
 
 	public Action[] getActions(State s);
 	public State getResult(State s, Action a);
