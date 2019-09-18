@@ -1,3 +1,3 @@
-public interface Result {
-	State Result(State s, Action a);
+public interface Result <StateClass, ActionClass> {
+	StateClass Result(StateClass s, ActionClass a);
 }

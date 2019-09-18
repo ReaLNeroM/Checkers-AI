@@ -1,5 +1,5 @@
-public class CheckersHeuristic implements Heuristic {
-	public int Heuristic(State s){
+public class CheckersHeuristic implements Heuristic <CheckersState, CheckersAction> {
+	public int Heuristic(CheckersState s){
 		//TODO
 		return 0;
 	}

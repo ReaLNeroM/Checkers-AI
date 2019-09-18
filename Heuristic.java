@@ -1,3 +1,3 @@
-public interface Heuristic {
-	int Heuristic(State s);
+public interface Heuristic<StateClass, ActionClass> {
+	int Heuristic(StateClass s);
 }

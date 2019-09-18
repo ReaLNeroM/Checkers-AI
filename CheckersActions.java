@@ -1,6 +1,6 @@
-public class CheckersActions implements Actions {
-	public Action[] Actions(State s){
-		return new Action[0];
+public class CheckersActions implements Actions <CheckersState, CheckersAction> {
+	public CheckersAction[] Actions(CheckersState s){
+		return new CheckersAction[0];
 		// TODO
 	}
 }

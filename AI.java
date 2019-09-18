@@ -1,9 +1,9 @@
-public interface AI {
-	Action randomPlay(Model model);
+public interface AI <StateClass, ActionClass> {
+	ActionClass randomPlay(Model<StateClass, ActionClass> model);
 
-	Action miniMax(Model model);
+	ActionClass miniMax(Model<StateClass, ActionClass> model);
 
-	Action miniMax_a_b(Model model);
+	ActionClass miniMax_a_b(Model<StateClass, ActionClass> model);
 
-	Action h_miniMax_a_b(Model model);
+	ActionClass h_miniMax_a_b(Model<StateClass, ActionClass> model);
 }

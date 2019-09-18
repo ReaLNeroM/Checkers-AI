@@ -1,5 +1,5 @@
-public class CheckersResult implements Result {
-	public State Result(State s, Action a){
+public class CheckersResult implements Result <CheckersState, CheckersAction> {
+	public CheckersState Result(CheckersState s, CheckersAction a){
 		return null;
 		// TODO
 	}

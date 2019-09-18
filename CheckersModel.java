@@ -1,9 +1,9 @@
-public class CheckersModel implements Model {
-	Actions ActionsImplementation;
-	Result ResultImplementation;
-	Cost CostImplementation;
-	Utility UtilityImplementation;
-	Heuristic HeuristicImplementation;
+public class CheckersModel implements Model <CheckersState, CheckersAction> {
+	Actions<CheckersState, CheckersAction> ActionsImplementation;
+	Result<CheckersState, CheckersAction> ResultImplementation;
+	Cost<CheckersState, CheckersAction> CostImplementation;
+	Utility<CheckersState, CheckersAction> UtilityImplementation;
+	Heuristic<CheckersState, CheckersAction> HeuristicImplementation;
 
 	public CheckersModel(){
 		this.ActionsImplementation = new CheckersActions();
@@ -13,7 +13,7 @@ public class CheckersModel implements Model {
 		this.HeuristicImplementation = new CheckersHeuristic();
 	}
 
-	public State getInitialState(int boardSize){
+	public CheckersState getInitialState(int boardSize){
 		if(boardSize == 4){
 			//TODO: pass in 2D array.
 		} else if(boardSize == 8){
@@ -25,19 +25,19 @@ public class CheckersModel implements Model {
 		return null;
 	}
 
-	public Action[] getActions(State s){
+	public CheckersAction[] getActions(CheckersState s){
 		return this.ActionsImplementation.Actions(s);
 	}
-	public State getResult(State s, Action a){
+	public CheckersState getResult(CheckersState s, CheckersAction a){
 		return this.ResultImplementation.Result(s, a);
 	}
-	public int getCost(State s, Action a){
+	public int getCost(CheckersState s, CheckersAction a){
 		return this.CostImplementation.Cost(s, a);
 	}
-	public int getUtility(State s){
+	public int getUtility(CheckersState s){
 		return this.UtilityImplementation.Utility(s);
 	}
-	public int getHeuristic(State s){
+	public int getHeuristic(CheckersState s){
 		return this.HeuristicImplementation.Heuristic(s);
 	}
 }
