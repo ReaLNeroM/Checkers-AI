@@ -38,6 +38,14 @@ public class CheckersAction implements Action {
 		this.intermediateJumps = decodeJumpString(JumpString);
 	}
 
+	public Jump[] getJumps(){
+		return intermediateJumps;
+	}
+
+	public int getNumberOfJumps(){
+		return intermediateJumps.length;
+	}
+
 	public String toString(){
 		StringBuilder actionString = new StringBuilder("");
 
