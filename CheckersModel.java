@@ -21,6 +21,8 @@ public class CheckersModel implements Model {
 		} else {
 			//TODO: raise error.
 		}
+
+		return null;
 	}
 
 	public Action[] getActions(State s){

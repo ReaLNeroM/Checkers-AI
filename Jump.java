@@ -1,8 +1,6 @@
-import java.util.Pair;
-
-public class Move {
-	private Pair<Integer, Integer> initialPosition;
-	private Pair<Integer, Integer> targetPosition;
+public class Jump {
+	private CoordinatePair initialPosition;
+	private CoordinatePair targetPosition;
 	boolean isCapture;
 
 	/**
@@ -13,7 +11,7 @@ public class Move {
 	 * <h1>use isCapture() method to check if this move  is a capture move</h1>
 	 * <h3>or I guess you could manually compute and see if the two locations are adjacent</h3>
 	 */
-	public Move(Pair<Integer, Integer> initialPosition, Pair<Integer, Integer> targetPosition, boolean isCapture) {
+	public Jump(CoordinatePair initialPosition, CoordinatePair targetPosition, boolean isCapture) {
 		this.initialPosition = initialPosition;
 		this.targetPosition = targetPosition;
 		this.isCapture = isCapture;
@@ -23,18 +21,18 @@ public class Move {
 		return isCapture;
 	}
 
-	public Pair<Integer, Integer> getInitialPosition() {
+	public CoordinatePair getInitialPosition() {
 		return initialPosition;
 	}
 
-	public Pair<Integer, Integer> getTargetPosition() {
+	public CoordinatePair getTargetPosition() {
 		return targetPosition;
 	}
 
 	@Override
 	public String toString() {
-		return "Move [initialPosition=" + Pair.toString(initialPosition) +
-				", targetPosition=" + Pair.toString(targetPosition) +
+		return "Jump [initialPosition=" + initialPosition.toString() +
+				", targetPosition=" + targetPosition.toString() +
 				", isCapture=" + isCapture + "]";
 	}
 }

@@ -1,41 +1,67 @@
-import java.util.Pair;
+import java.util.ArrayList;
+import java.lang.StringBuilder;
 
 public class CheckersAction implements Action {
-	private Move[] intermediateMoves;
+	private Jump[] intermediateJumps;
 
-	private String coordinatesToString(Pair<Integer, Integer> coordinates){
-		Character rowCharacter = 'A' + v
-		return
-	}
+	private Jump[] decodeJumpString(String JumpString){
+		String[] namesOfCellsInJump = JumpString.split("x|-");
 
-	private Move[] decodeMoveString(String moveDescription){
-		String[] namesOfCellsInMove = moveDescription.split("x|-");
+		ArrayList<CoordinatePair> jumpCoordinates = new ArrayList<CoordinatePair>();
 
-		Pair<Integer, Integer>[] coordinatesOfCellsInMove =
-			new ArrayList<Pair<Integer, Integer>>();
-
-		for(String nameOfCell : namesOfCellsInMove){
-			int rowNumber = nameOfCell.get(0).getNumericValue() - 'A'.getNumericValue()
-			int columnNumber = nameOfCell.get(0).getNumericValue() - '1'.getNumericValue();
-			coordinatesOfCellsInMove.append(Pair(rowNumber, columnNumber))
+		for(String coordinatesOfCell : namesOfCellsInJump){
+			jumpCoordinates.add(new CoordinatePair(coordinatesOfCell));
 		}
 
-		return coordinatesOfCellsInMove;
+		ArrayList<Jump> intermediateJumps = new ArrayList<Jump>();
+		for(int i = 0; i < jumpCoordinates.size() - 1; i++){
+			// Every 3rd character starting from the second one is either '-' or 'x', indicating
+			// either a normal jump or a capture jump respectively.
+			Character isCaptureCharacter = JumpString.charAt(3 * i + 2);
+			boolean isCapture = (isCaptureCharacter == 'x');
+
+			intermediateJumps.add(new Jump(
+				jumpCoordinates.get(i),
+				jumpCoordinates.get(i + 1),
+				isCapture
+			));
+		}
+
+		return intermediateJumps.toArray(new Jump[intermediateJumps.size()]);
 	}
 
-	CheckersAction(Move[] intermediateMoves){
-		this.intermediateMoves = intermediateMoves;
+	CheckersAction(Jump[] intermediateJumps){
+		this.intermediateJumps = intermediateJumps;
 	}
 
-	CheckersAction(String moveDescription){
-		this.intermediateMoves = decodeMoveString(moveDescription);
+	CheckersAction(String JumpString){
+		this.intermediateJumps = decodeJumpString(JumpString);
 	}
 
 	public String toString(){
+		StringBuilder actionString = new StringBuilder("");
 
+		actionString.append(intermediateJumps[0].getInitialPosition().toString());
+
+		for(Jump currentJump : intermediateJumps){
+			if(currentJump.isCapture){
+				actionString.append("x");
+			} else {
+				actionString.append("-");
+			}
+
+			actionString.append(currentJump.getTargetPosition().toString());
+		}
+
+		return actionString.toString();
 	}
 
-	public int getNumberOfCaptures(){
-		return intermediateMoves.length;
+	public Integer getNumberOfCaptures(){
+		int captures = 0;
+		for(Jump currentJump : intermediateJumps){
+			captures += currentJump.isCapture() ? 1 : 0;
+		}
+
+		return Integer.valueOf(captures);
 	}
 }
