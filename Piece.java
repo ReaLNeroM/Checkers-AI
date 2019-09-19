@@ -16,7 +16,7 @@ public class Piece {
 		return color;
 	}
 
-	public boolean getStatus() {
+	public boolean getIsKing() {
 		return isKing;
 	}
 

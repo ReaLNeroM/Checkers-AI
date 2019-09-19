@@ -30,7 +30,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			if(!b.hasPiece(capturePosition)){
 				return false;
 			}
-			if(b.getPiece(capturePosition).getColor() == s.getNextPlayerColor()){
+			if(b.getPiece(capturePosition).getColor().equals(s.getNextPlayerColor())){
 				return false;
 			}
 
@@ -43,7 +43,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			}
 
 			// Non-king pieces can only capture forwards
-			if(!jumpingPiece.getStatus() && deltaY != -2){
+			if(!jumpingPiece.getIsKing() && deltaY != -2){
 				return false;
 			}
 		} else {
@@ -56,7 +56,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			}
 
 			// Non-king pieces can only skip forwards
-			if(!jumpingPiece.getStatus() && deltaY != -1){
+			if(!jumpingPiece.getIsKing() && deltaY != -1){
 				return false;
 			}
 		}
