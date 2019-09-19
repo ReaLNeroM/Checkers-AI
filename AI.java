@@ -14,7 +14,7 @@ public class AI <StateClass, ActionClass> {
 			return null;
 		}
 
-		int randomIndex = randomGenerator.nextInt() % validActions.length;
+		int randomIndex = randomGenerator.nextInt(validActions.length);
 		return validActions[randomIndex];
 	}
 

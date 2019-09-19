@@ -16,5 +16,13 @@ public class GameRunner {
 				System.out.println(resultingState.toString());
 			}
 		}
+
+		AI<CheckersState, CheckersAction> aiInstance = new AI<CheckersState, CheckersAction>();
+
+		CheckersAction aa = aiInstance.randomPlay(m, initialState);
+		CheckersState resultingState = m.getResult(initialState, aa);
+		if(resultingState != null) {
+			System.out.println(resultingState.toString());
+		}
 	}
 }
