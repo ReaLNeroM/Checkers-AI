@@ -19,12 +19,24 @@ public class CheckersAction implements Action {
 			// either a normal jump or a capture jump respectively.
 			Character isCaptureCharacter = JumpString.charAt(3 * i + 2);
 			boolean isCapture = (isCaptureCharacter == 'x');
+			CoordinatePair captureCoordinates = new CoordinatePair(
+				(jumpCoordinates.get(i).getFirst() + jumpCoordinates.get(i + 1).getFirst()) / 2,
+				(jumpCoordinates.get(i).getSecond() + jumpCoordinates.get(i + 1).getSecond()) / 2
+			);
 
-			intermediateJumps.add(new Jump(
-				jumpCoordinates.get(i),
-				jumpCoordinates.get(i + 1),
-				isCapture
-			));
+			Jump nextJump = null;
+			if(isCapture){
+				intermediateJumps.add(new Jump(
+					jumpCoordinates.get(i),
+					jumpCoordinates.get(i + 1),
+					captureCoordinates
+				));
+			} else {
+				intermediateJumps.add(new Jump(
+					jumpCoordinates.get(i),
+					jumpCoordinates.get(i + 1)
+				));
+			}
 		}
 
 		return intermediateJumps.toArray(new Jump[intermediateJumps.size()]);
@@ -52,7 +64,7 @@ public class CheckersAction implements Action {
 		actionString.append(intermediateJumps[0].getInitialPosition().toString());
 
 		for(Jump currentJump : intermediateJumps){
-			if(currentJump.isCapture){
+			if(currentJump.isCapture()){
 				actionString.append("x");
 			} else {
 				actionString.append("-");

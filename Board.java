@@ -35,8 +35,31 @@ public class Board {
 		}//white side
 	}
 
-	public boolean hasPiece() {
+	public Board(Piece[][] b){
+		board = b.clone();
+	}
+
+	public boolean hasPiece(CoordinatePair c) {
+		// TODO
 		return false;
+	}
+
+	public Piece[][] getBoard(){
+		return board;
+	}
+
+	public void setPiece(CoordinatePair c, Piece p){
+		// TODO
+	}
+
+	public Piece getPiece(CoordinatePair c){
+		// TODO
+		return null;
+	}
+
+	public Integer getSize(){
+		// TODO
+		return 0;
 	}
 
 	public void printToConsoleTest() {

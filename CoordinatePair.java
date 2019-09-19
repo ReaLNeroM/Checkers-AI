@@ -12,6 +12,14 @@ public class CoordinatePair {
         this.columnNumber = columnNumber;
     }
 
+    public Integer getFirst(){
+        return rowNumber;
+    }
+
+    public Integer getSecond(){
+        return columnNumber;
+    }
+
     public String toString(String pairString){
         String rowCharacter = Character.toString((int) 'A' + rowNumber);
         String columnCharacter = Character.toString((int) '1' + columnNumber);

@@ -7,4 +7,8 @@ public class CheckersState implements State {
 		return null;
 		// TODO
 	}
+	public String getNextPlayerColor(){
+		return "";
+		// TODO
+	}
 }
