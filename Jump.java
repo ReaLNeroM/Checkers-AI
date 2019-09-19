@@ -1,7 +1,7 @@
 public class Jump {
 	private CoordinatePair initialPosition;
-	private CoordinatePair capturePosition;
 	private CoordinatePair targetPosition;
+	private CoordinatePair capturePosition;
 
 	/**
 	 *
@@ -32,12 +32,12 @@ public class Jump {
 		return initialPosition;
 	}
 
-	public CoordinatePair getCapturePosition() {
-		return capturePosition;
-	}
-
 	public CoordinatePair getTargetPosition() {
 		return targetPosition;
+	}
+
+	public CoordinatePair getCapturePosition() {
+		return capturePosition;
 	}
 
 	@Override

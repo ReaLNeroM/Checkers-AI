@@ -3,7 +3,14 @@ public class CoordinatePair {
     Integer columnNumber;
 
     public CoordinatePair(String pairString){
-        this.rowNumber = Integer.valueOf((int) pairString.charAt(0) - (int) 'A');
+    	if('A' <= pairString.charAt(0) && pairString.charAt(0) <= 'Z'){
+	        this.rowNumber = Integer.valueOf((int) pairString.charAt(0) - (int) 'A');
+    	} else if ('a' <= pairString.charAt(0) && pairString.charAt(0)  <= 'z'){
+	        this.rowNumber = Integer.valueOf((int) pairString.charAt(0) - (int) 'a');
+    	} else {
+    		this.rowNumber = null;
+    	}
+
         this.columnNumber = Integer.valueOf((int) pairString.charAt(1) - (int) '1');
     }
 
