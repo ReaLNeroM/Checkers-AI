@@ -177,11 +177,11 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			CheckersAction[] captures = getCaptures(s, currentPartialAction);
 			CheckersAction[] skips = getSkips(s, currentPartialAction);
 
-			if(captures.length != 0){
-				for(CheckersAction a : captures){
-					partialMoveFrontier.add(a);
-				}
-			} else if(skips.length == 0 && captures.length == 0){
+			for(CheckersAction a : captures){
+				partialMoveFrontier.add(a);
+			}
+
+			if(captures.length == 0){
 				for(CheckersAction a : skips){
 					partialMoveFrontier.add(a);
 				}

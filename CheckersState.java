@@ -26,4 +26,10 @@ public class CheckersState implements State {
 	public Integer getNumberOfMovesDone(){
 		return numberOfTurns;
 	}
+
+	public String toString(){
+		return "[Board=" + board.toString() + "," +
+			   " color=" + color.toString() + "," +
+			   " numberOfTurns=" + numberOfTurns.toString() + "]";
+	}
 }

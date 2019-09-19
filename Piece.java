@@ -26,6 +26,6 @@ public class Piece {
 
 	@Override
 	public String toString() {
-		return "Piece [color=" + color.name() + ", isKing?=" + isKing + "]";
+		return "Piece [color=" + color.toString() + ", isKing?=" + isKing + "]";
 	}
 }

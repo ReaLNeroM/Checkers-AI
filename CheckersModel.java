@@ -14,12 +14,45 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 	}
 
 	public CheckersState getInitialState(int boardSize){
+		Piece[][] boardPieces = new Piece[boardSize][boardSize];
+
+		for(int i = 0; i < boardSize; i++){
+			for(int j = 0; j < boardSize; j++){
+				boardPieces[i][j] = new Piece(new Color(0));
+			}
+		}
+
+		for(int i = 0; i < (boardSize/2)-1; i++) {
+			for(int j = 0; j < boardSize; j++) {
+				if(i%2==0) {
+					if(j%2!=0) {
+						boardPieces[i][j] = new Piece(new Color(2));
+					}
+				}else {
+					if(j%2==0) {
+						boardPieces[i][j] = new Piece(new Color(2));
+					}
+				}
+			}
+		}//black side
+		for(int i = boardSize-1; i >= (boardSize/2)+1; i--) {
+			for(int j = 0; j < boardSize; j++) {
+				if(i%2!=0) {
+					if(j%2==0) {
+						boardPieces[i][j] = new Piece(new Color(1));
+					}
+				}else {
+					if(j%2!=0) {
+						boardPieces[i][j] = new Piece(new Color(1));
+					}
+				}
+			}
+		}//white side
+
 		if(boardSize == 4){
-			//TODO: pass in 2D array.
+			return new CheckersState(new Board(boardPieces), new Color(1));
 		} else if(boardSize == 8){
-			//TODO: pass in 2D array.
-		} else {
-			//TODO: raise error.
+			return new CheckersState(new Board(boardPieces), new Color(1));
 		}
 
 		return null;

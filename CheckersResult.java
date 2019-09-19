@@ -22,12 +22,7 @@ public class CheckersResult implements Result <CheckersState, CheckersAction> {
 
 		Board resultingBoard = checkersActionsImplementation.resultingBoardAfterPartialAction(s, a);
 		Integer numberOfMoves = s.getNumberOfMovesDone() + 1;
-		Color nextPlayer = Color.BLANK;
-		if(s.getNextPlayerColor() == Color.W){
-			nextPlayer = Color.B;
-		} else {
-			nextPlayer = Color.W;
-		}
+		Color nextPlayer = s.getNextPlayerColor().getOppositeColor();
 
 		CheckersState resultingState = new CheckersState(resultingBoard, nextPlayer, numberOfMoves);
 		return resultingState;

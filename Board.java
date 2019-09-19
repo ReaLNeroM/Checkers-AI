@@ -1,69 +1,68 @@
-import java.util.*;
-
 public class Board {
 	private Piece[][] board;
-	// TODO size
-	// private BoardUtil util = new BoardUtil();
-	public Board(int size) {
-		board = new Piece[size][size];
-		for(int i = 0; i < (size/2)-1; i++) {
-			for(int j = 0; j < size; j++) {
-				if(i%2==0) {
-					if(j%2!=0) {
-						board[i][j] = new Piece(Color.B);
-					}
-				}else {
-					if(j%2==0) {
-						board[i][j] = new Piece(Color.B);
-					}
-				}
-			}
-		}//black side
-		for(int i = size-1; i >= (size/2)+1; i--) {
-			for(int j = 0; j < size; j++) {
-				if(i%2!=0) {
-					if(j%2==0) {
-						board[i][j] = new Piece(Color.W);
-					}
-				}else {
-					if(j%2!=0) {
-						board[i][j] = new Piece(Color.W);
-					}
-				}
-			}
-		}//white side
+	private Integer size;
+
+	private boolean withinBounds(CoordinatePair c){
+		if(0 <= c.getFirst() && c.getFirst() < 8 && 0 <= c.getSecond() && c.getSecond() < 8){
+			return true;
+		}
+		return false;
 	}
 
 	public Board(Piece[][] b){
+		size = b.length;
 		board = b.clone();
 	}
 
+	public Board(Board b){
+		this(b.getBoard());
+	}
+
 	public boolean hasPiece(CoordinatePair c) {
-		// TODO
-		return false;
+		if(!withinBounds(c)){
+			return false;
+		}
+
+		return (board[c.getFirst()][c.getSecond()] != null);
 	}
 
 	public Piece[][] getBoard(){
 		return board;
 	}
 
-	public void setPiece(CoordinatePair c, Piece p){
-		// TODO
-	}
-
 	public Piece getPiece(CoordinatePair c){
-		// TODO
-		return null;
+		if(!withinBounds(c)){
+			return null;
+		}
+
+		return board[c.getFirst()][c.getSecond()];
 	}
 
 	public Integer getSize(){
-		// TODO
-		return 0;
+		return size;
+	}
+
+	public void setPiece(CoordinatePair c, Piece p){
+		if(!withinBounds(c)){
+			return;
+		}
+
+		board[c.getFirst()][c.getSecond()] = p;
 	}
 
 	public String toString(){
-		// TODO
-		return "";
+		StringBuilder boardString = new StringBuilder("[\n");
+
+		for(Piece[] rowOfPieces : board){
+			boardString.append('\t');
+			for(Piece currentPiece : rowOfPieces){
+				boardString.append(currentPiece.getColor());
+			}
+			boardString.append('\n');
+		}
+
+		boardString.append("]");
+		return boardString.toString();
 	}
 
 	public void printToConsoleTest() {
@@ -94,146 +93,4 @@ public class Board {
 		// 	System.out.println("validMoves returned null");
 		// }
 	}
-
-	/**
-	 *
-	 * @param row
-	 * @param col
-	 * @return ArrayList<Move> only returns an ArrayList of the immediate moves
-	 * <strong>i.e not including multi capture moves, just the immediate capture<strong>
-	 */
-	// public ArrayList<Move> validMovesFor(int row, int col) {
-	// 	if(!util.existInBoard(row, col)) {
-	// 		System.out.println("given coordinates does not exist on current board: " + row + ", " + col);
-	// 		return null;
-	// 	}
-	// 	if(board[row][col] == null) {
-	// 		System.out.println("Error: given coordinate has no piece present at row: " + row + " col: " + col);
-	// 		return null;
-	// 	}
-	// 	Piece target = board[row][col];
-	// 	ArrayList<int[]> validMoves = util.getDiagonalPosition(row, col);
-	// 	if(target.getStatus()) {
-	// 		//process all four directions because king can move in all directions
-	// 	}else {
-	// 		if(target.getColor().equals(WHITE)) {
-	// 			//only process top two
-	// 			//ARRAYLISTS AUTO SHIFT ELEMENTS DOWN!
-	// 			validMoves.remove(2);
-	// 			validMoves.remove(2);
-	// 		}else
-	// 		if(target.getColor().equals(BLACK)){
-	// 			//only process bottom two
-	// 			validMoves.remove(0);
-	// 			validMoves.remove(0);
-	// 		}else {
-	// 			System.out.println("Error: target piece at " + row + ", " + col + " does not match known colors");
-	// 			return null;
-	// 		}
-	// 	}
-	// 	for(int i = 0; i < validMoves.size(); i++) {
-	// 		//see the description for util.getDiagonalPosition(), -9 is the error coordinate substitute
-	// 		if(validMoves.get(i)[0] == -9) {
-	// 			validMoves.remove(i);
-	// 		}
-	// 	}
-	// 	//after determining the direction we need to process
-	// 	//we check if the diagonal is blacked
-	// 	ArrayList<Move> output = new ArrayList<Move>();
-	// 	for(int[] coordinate : validMoves) {
-	// 		int x = coordinate[0];
-	// 		int y = coordinate[1];
-	// 		if(util.occupied(x, y)) {
-	// 			//check for color
-	// 			if(board[x][y].getColor().equals(target.getColor())) {
-	// 				//no further jump available
-	// 				//NO AVALIABLE MOVE!
-	// 			}else {
-	// 				//piece is opposite color thus could capture
-	// 				//check for valid alternatives
-	// 				int xDiff = row - x;
-	// 				int yDiff = col - y;
-	// 				int newX = x-xDiff;
-	// 				int newY = y-yDiff;
-	// 				if(!util.occupied(newX, newY)) {
-	// 					//capture move is valid
-	// 					//THIS MOVE IS A CAPTURE!
-	// 					Move m = new Move(new int[] {row, col}, new int[] {newX, newY}, true);
-	// 					output.add(m);
-	// 				}
-	// 			}
-	// 		}else {
-	// 			//THIS IS A MOVE!
-	// 			Move m = new Move(new int[] {row, col}, coordinate, false);
-	// 			output.add(m);
-	// 		}
-	// 	}
-	// 	return output;
-	// }
-
-	// public boolean makeMove(Move move) {
-	// 	return true;
-	// }
-
-	// private class BoardUtil {
-
-	// 	/**
-	// 	 * @param row row index
-	// 	 * @param col column index
-	// 	 * @return ArrayList<int[]> ArrayList of the four coordinates around the immediate diagonal
-	// 	 *  of the input coordinates. in clockwise order starting from top left
-	// 	 * <h1><strong>{-9, -9} is coordinate return for outside of board positions</strong></h1>
-	// 	 */
-	// 	public ArrayList<int[]> getDiagonalPosition(int row, int col) {
-	// 		ArrayList<int[]> output = new ArrayList<int[]>();
-	// 		//check top left
-	// 		if(existInBoard(row-1, col-1)) {
-	// 			int[] tl = {row-1, col-1};
-	// 			output.add(tl);
-	// 		}else {
-	// 			output.add(new int[]{-9, -9});
-	// 		}
-	// 		//check top right
-	// 		if(existInBoard(row-1, col+1)) {
-	// 			int[] tr = {row-1, col+1};
-	// 			output.add(tr);
-	// 		}else {
-	// 			output.add(new int[]{-9, -9});
-	// 		}
-	// 		//check bottom right
-	// 		if(existInBoard(row+1, col+1)) {
-	// 			int[] br = {row+1, col+1};
-	// 			output.add(br);
-	// 		}else {
-	// 			output.add(new int[]{-9, -9});
-	// 		}
-	// 		//check bottom left
-	// 		if(existInBoard(row+1, col-1)) {
-	// 			int[] bl = {row+1, col-1};
-	// 			output.add(bl);
-	// 		}else {
-	// 			output.add(new int[]{-9, -9});
-	// 		}
-
-	// 		return output;
-	// 	}
-
-	// 	private boolean existInBoard(int row, int col) {
-	// 		if(row<0 || col<0) {
-	// 			return false;
-	// 		}
-	// 		if(row>board.length-1 || col>board[0].length) {
-	// 			return false;
-	// 		}
-	// 		return true;
-	// 	}
-
-	// 	private boolean occupied(int row, int col) {
-	// 		if(board[row][col]!=null) {
-	// 			return true;
-	// 		}else {
-	// 			return false;
-	// 		}
-	// 	}
-	// }
 }
