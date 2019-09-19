@@ -75,7 +75,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		return resultingBoard;
 	}
 
-	private Board resultingBoardAfterPartialAction(CheckersState s, CheckersAction partialAction){
+	public Board resultingBoardAfterPartialAction(CheckersState s, CheckersAction partialAction){
 		Board currentBoard = s.getBoard();
 
 		for(Jump j : partialAction.getJumps()){
