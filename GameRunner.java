@@ -1,12 +1,18 @@
+import javax.swing.*;
 
 public class GameRunner {
 	public static void main(String args[]) 
 	{ 
-//		System.out.println("---number 4 test:");
-//		Board b1 = new Board(4);
-//		b1.printToConsoleTest();
-		System.out.println("---number 8 test:");
-		Board b2 = new Board(8);
-		b2.printToConsoleTest();
+		GameSetup setup = new GameSetup();
+		setup.promptPlayer();
+		
+		if(setup.setUpComplete()) {
+			System.out.println("setup complete");
+		}else {
+			JFrame f = new JFrame();
+			JOptionPane.showMessageDialog(f, "setup incomplete");
+			System.out.println("setup incomplete");
+		}
+		GameWindow window = new GameWindow("checkers game", setup);
 	} 
 }
