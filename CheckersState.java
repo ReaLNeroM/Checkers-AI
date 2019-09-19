@@ -1,14 +1,21 @@
 public class CheckersState implements State {
-	public Board getBoard(){
-		return null;
-		// TODO
+	Board board;
+	Color color;
+
+	public CheckersState(Board board, Color color){
+		this.board = board;
+		this.color = color;
 	}
+
+	public Board getBoard(){
+		return board;
+	}
+
 	public Integer getNumberOfMovesDone(){
 		return null;
 		// TODO
 	}
-	public String getNextPlayerColor(){
-		return "";
-		// TODO
+	public Color getNextPlayerColor(){
+		return color;
 	}
 }

@@ -2,20 +2,19 @@ import java.util.*;
 
 public class Board {
 	private Piece[][] board;
+	// TODO size
 	// private BoardUtil util = new BoardUtil();
-	private String WHITE = "w";
-	private String BLACK = "b";
 	public Board(int size) {
 		board = new Piece[size][size];
 		for(int i = 0; i < (size/2)-1; i++) {
 			for(int j = 0; j < size; j++) {
 				if(i%2==0) {
 					if(j%2!=0) {
-						board[i][j] = new Piece(BLACK);
+						board[i][j] = new Piece(Color.B);
 					}
 				}else {
 					if(j%2==0) {
-						board[i][j] = new Piece(BLACK);
+						board[i][j] = new Piece(Color.B);
 					}
 				}
 			}
@@ -24,11 +23,11 @@ public class Board {
 			for(int j = 0; j < size; j++) {
 				if(i%2!=0) {
 					if(j%2==0) {
-						board[i][j] = new Piece(WHITE);
+						board[i][j] = new Piece(Color.W);
 					}
 				}else {
 					if(j%2!=0) {
-						board[i][j] = new Piece(WHITE);
+						board[i][j] = new Piece(Color.W);
 					}
 				}
 			}
