@@ -9,7 +9,6 @@ public class CheckersResult implements Result <CheckersState, CheckersAction> {
 		CheckersAction[] validActions = checkersActionsImplementation.Actions(s);
 
 		boolean isValid = false;
-
 		for(CheckersAction validAction : validActions){
 			if(a.equals(validAction)){
 				isValid = true;

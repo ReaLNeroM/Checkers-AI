@@ -1,4 +1,3 @@
-
 public class GameRunner {
 	public static void main(String args[]) {
 		// System.out.println("---number 4 test:");
@@ -10,9 +9,12 @@ public class GameRunner {
 
 		System.out.println(initialState.toString());
 
-		// CheckersAction[] a = m.getActions(initialState);
-		// for(CheckersAction bb : a){
-		// 	System.out.println(bb.toString());
-		// }
+		CheckersAction[] a = m.getActions(initialState);
+		for(CheckersAction bb : a){
+			CheckersState resultingState = m.getResult(initialState, bb);
+			if(resultingState != null) {
+				System.out.println(resultingState.toString());
+			}
+		}
 	}
 }

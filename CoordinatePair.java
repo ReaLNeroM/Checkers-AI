@@ -27,6 +27,11 @@ public class CoordinatePair {
         return columnNumber;
     }
 
+    public boolean equals(CoordinatePair comparisonCoordinatePair) {
+    	return rowNumber == comparisonCoordinatePair.getFirst() &&
+    		   columnNumber == comparisonCoordinatePair.getSecond();
+    }
+
     public String toString(String pairString){
         String rowCharacter = Character.toString((int) 'A' + rowNumber);
         String columnCharacter = Character.toString((int) '1' + columnNumber);

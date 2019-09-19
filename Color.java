@@ -49,6 +49,10 @@ public class Color {
 		return new Color(ColorValue.BLANK);
 	}
 
+	public boolean equals(Color comparisonColor) {
+		return this.toInteger() == comparisonColor.toInteger();
+	}
+
 	public Integer toInteger(){
 		switch (color){
 			case FIRST:

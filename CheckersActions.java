@@ -8,12 +8,16 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		CoordinatePair initialPosition = j.getInitialPosition();
 		CoordinatePair targetPosition = j.getTargetPosition();
 
+		if(!b.withinBounds(initialPosition) || !b.withinBounds(targetPosition)) {
+			return false;
+		}
+
 		if(!b.hasPiece(initialPosition)){
 			return false;
 		}
 
 		Piece jumpingPiece = b.getPiece(initialPosition);
-		if(jumpingPiece.getColor() != s.getNextPlayerColor()){
+		if(!jumpingPiece.getColor().equals(s.getNextPlayerColor())){
 			return false;
 		}
 		if(b.hasPiece(j.getTargetPosition())){
@@ -39,7 +43,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			}
 
 			// Non-king pieces can only capture forwards
-			if(!jumpingPiece.getStatus() && deltaY != 2){
+			if(!jumpingPiece.getStatus() && deltaY != -2){
 				return false;
 			}
 		} else {
@@ -52,7 +56,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			}
 
 			// Non-king pieces can only skip forwards
-			if(!jumpingPiece.getStatus() && deltaY != 1){
+			if(!jumpingPiece.getStatus() && deltaY != -1){
 				return false;
 			}
 		}
@@ -61,13 +65,13 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 	}
 
 	private Board resultingBoardAfterJump(Board b, Jump j){
-		Board resultingBoard = new Board(b.getBoard());
+		Board resultingBoard = new Board(b);
 
-		Piece jumpingPiece = b.getPiece(j.getInitialPosition());
+		Piece jumpingPiece = resultingBoard.getPiece(j.getInitialPosition());
 
-		resultingBoard.setPiece(j.getInitialPosition(), null);
+		resultingBoard.setPiece(j.getInitialPosition(), new Piece(new Color(0)));
 		if(j.isCapture()){
-			resultingBoard.setPiece(j.getCapturePosition(), null);
+			resultingBoard.setPiece(j.getCapturePosition(), new Piece(new Color(0)));
 		}
 		//TODO: promote
 		resultingBoard.setPiece(j.getTargetPosition(), jumpingPiece);
@@ -90,6 +94,11 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 	}
 
 	public CheckersAction[] getCaptures(CheckersState s, CheckersAction partialAction){
+		if(partialAction.getNumberOfJumps() != partialAction.getNumberOfCaptures()) {
+			// Captures can't be done after a skip
+			return new CheckersAction[0];
+		}
+
 		Board currentBoard = resultingBoardAfterPartialAction(s, partialAction);
 
 		ArrayList<CheckersAction> possibleCaptures = new ArrayList<CheckersAction>();
@@ -135,7 +144,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 		Board currentBoard = resultingBoardAfterPartialAction(s, partialAction);
 
-		ArrayList<CheckersAction> possibleCaptures = new ArrayList<CheckersAction>();
+		ArrayList<CheckersAction> possibleSkips = new ArrayList<CheckersAction>();
 		for(int i = 0; i < currentBoard.getSize(); i++){
 			for(int j = 0; j < currentBoard.getSize(); j++){
 				CoordinatePair initialPosition = new CoordinatePair(i, j);
@@ -147,14 +156,14 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 						Jump jumpAttempt = new Jump(initialPosition, targetPosition);
 						if(verifyJump(currentBoard, jumpAttempt, s)){
-							possibleCaptures.add(new CheckersAction(new Jump[]{jumpAttempt}));
+							possibleSkips.add(new CheckersAction(new Jump[]{jumpAttempt}));
 						}
 					}
 				}
 			}
 		}
 
-		return possibleCaptures.toArray(new CheckersAction[possibleCaptures.size()]);
+		return possibleSkips.toArray(new CheckersAction[possibleSkips.size()]);
 	}
 
 	public CheckersAction[] Actions(CheckersState s){
@@ -170,7 +179,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			if(currentPartialAction.getNumberOfCaptures() > mostCapturesPossible){
 				validMoves.clear();
 			}
-			if(currentPartialAction.getNumberOfCaptures() >= mostCapturesPossible){
+			if(currentPartialAction.getNumberOfJumps() != 0 && currentPartialAction.getNumberOfCaptures() >= mostCapturesPossible){
 				validMoves.add(currentPartialAction);
 			}
 

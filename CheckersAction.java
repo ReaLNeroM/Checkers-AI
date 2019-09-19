@@ -58,10 +58,35 @@ public class CheckersAction implements Action {
 		return intermediateJumps.length;
 	}
 
+	public Integer getNumberOfCaptures(){
+		int captures = 0;
+		for(Jump currentJump : intermediateJumps){
+			captures += currentJump.isCapture() ? 1 : 0;
+		}
+
+		return Integer.valueOf(captures);
+	}
+
+	public boolean equals(CheckersAction comparisonAction) {
+		if(getNumberOfJumps() != comparisonAction.getNumberOfJumps()) {
+			return false;
+		}
+
+		for(int i = 0; i < intermediateJumps.length; i++) {
+			if (!intermediateJumps[i].equals(comparisonAction.getJumps()[i])) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public String toString(){
 		StringBuilder actionString = new StringBuilder("");
 
-		actionString.append(intermediateJumps[0].getInitialPosition().toString());
+		if(intermediateJumps.length >= 1) {
+			actionString.append(intermediateJumps[0].getInitialPosition().toString());
+		}
 
 		for(Jump currentJump : intermediateJumps){
 			if(currentJump.isCapture()){
@@ -74,14 +99,5 @@ public class CheckersAction implements Action {
 		}
 
 		return actionString.toString();
-	}
-
-	public Integer getNumberOfCaptures(){
-		int captures = 0;
-		for(Jump currentJump : intermediateJumps){
-			captures += currentJump.isCapture() ? 1 : 0;
-		}
-
-		return Integer.valueOf(captures);
 	}
 }

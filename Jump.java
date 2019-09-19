@@ -40,6 +40,23 @@ public class Jump {
 		return capturePosition;
 	}
 
+	public boolean equals(Jump comparisonJump) {
+		if(!initialPosition.equals(comparisonJump.getInitialPosition())){
+			return false;
+		}
+		if(!targetPosition.equals(comparisonJump.getTargetPosition())){
+			return false;
+		}
+		if(this.isCapture() != comparisonJump.isCapture()) {
+			return false;
+		}
+		if(this.isCapture() && capturePosition != comparisonJump.getCapturePosition()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		if(capturePosition == null){
