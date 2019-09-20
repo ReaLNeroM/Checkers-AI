@@ -23,13 +23,15 @@ public class AI <StateClass, ActionClass> {
 	public ActionClass miniMax(Model<StateClass, ActionClass> model, StateClass state){
 		ActionClass[] validActions = model.getActions(state);
 
-		Double score = Double.MIN_VALUE;
+		Pair<Double, Integer> score = new Pair<Double, Integer>(Double.MIN_VALUE, Integer.MAX_VALUE);
 		ActionClass bestMove = null;
 		for(int i = 0; i < validActions.length; i++) {
 			StateClass currentState = model.getResult(state, validActions[i]);
 
-			double opponentScore = miniMaxHelp(model, currentState);
-			if(opponentScore>score) {
+			Pair<Double, Integer> opponentScore = miniMaxHelp(model, currentState);
+			//evaluates the result based on score and cost
+			//prioritizing score primarily and cost secondarily
+			if(utilCompare(opponentScore, score)) {
 				score = opponentScore;
 				bestMove = validActions[i];
 			}
@@ -37,23 +39,42 @@ public class AI <StateClass, ActionClass> {
 		return bestMove;
 	}
 
-	private Double miniMaxHelp(Model<StateClass, ActionClass> model, StateClass state) {
+	private Pair<Double, Integer> miniMaxHelp(Model<StateClass, ActionClass> model, StateClass state) {
 		//check if is terminal state
 		if(model.getIsTerminal(state)) {
-			return Double.valueOf(model.getUtility(state));
+			Pair<Double, Integer> output = new Pair<Double, Integer>(Double.valueOf(model.getUtility(state)), 0);
+			return output;
 		}
 
 		ActionClass[] validActions = model.getActions(state);
-		Double score = Double.MIN_VALUE;
+		Pair<Double, Integer> score = new Pair<Double, Integer>(Double.MIN_VALUE, Integer.MAX_VALUE);
 		for(int i = 0; i < validActions.length; i++) {
 			StateClass currentState = model.getResult(state, validActions[i]);
 
-			double opponentScore = miniMaxHelp(model, currentState);
-			if(opponentScore>score) {
+			Pair<Double, Integer> opponentScore = miniMaxHelp(model, currentState);
+			//evaluates the result based on score and cost
+			//prioritizing score primarily and cost secondarily
+			if(utilCompare(opponentScore, score)) {
 				score = opponentScore;
 			}
 		}
 		return score;
+	}
+	
+	/**
+	 * 
+	 * @param firstUtil
+	 * @param secondUtil
+	 * @return true if the first is better than second
+	 */
+	private boolean utilCompare(Pair<Double, Integer> firstUtil, Pair<Double, Integer> secondUtil) {
+		if(firstUtil.getFirst()>secondUtil.getFirst()) {
+			return true;
+		}
+		if(firstUtil.getFirst() == secondUtil.getFirst() && firstUtil.getSecond() < secondUtil.getSecond()) {
+			return true;
+		}
+		return false;
 	}
 
 	public ActionClass miniMax_a_b(Model<StateClass, ActionClass> model, StateClass state){
