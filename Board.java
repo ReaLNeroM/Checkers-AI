@@ -4,11 +4,11 @@ public class Board {
 
 	public Board(Piece[][] board){
 		size = board.length;
-		board = new Piece[size][size];
+		this.board = new Piece[size][size];
 
 		for(int i = 0; i < size; i++) {
 			for(int j = 0; j < size; j++) {
-				board[i][j] = board[i][j];
+				this.board[i][j] = board[i][j];
 			}
 		}
 	}

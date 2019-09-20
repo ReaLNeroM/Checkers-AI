@@ -5,7 +5,7 @@ public class GameRunner {
 		// b1.printToConsoleTest();
 		CheckersModel model = new CheckersModel();
 
-		CheckersState currentState = model.getcurrentState(4);
+		CheckersState currentState = model.getInitialState(4);
 
 		System.out.println(currentState.toString());
 
