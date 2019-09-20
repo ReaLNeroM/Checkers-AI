@@ -21,48 +21,67 @@ public class AI <StateClass, ActionClass> {
 	}
 
 	public ActionClass miniMax(Model<StateClass, ActionClass> model, StateClass state){
-		ActionClass[] validActions = model.getActions(state);
+		if(model.getIsTerminal(state)) {
+			return null;
+		}
 
-		Pair<Double, Integer> score = new Pair<Double, Integer>(Double.MIN_VALUE, Integer.MAX_VALUE);
+		ActionClass[] validActions = model.getActions(state);
+		Pair<Double, Integer> bestUtility = new Pair<Double, Integer>(Double.NEGATIVE_INFINITY,
+																	  Integer.MAX_VALUE);
+
 		ActionClass bestMove = null;
 		for(int i = 0; i < validActions.length; i++) {
 			StateClass currentState = model.getResult(state, validActions[i]);
 
-			Pair<Double, Integer> opponentScore = miniMaxHelp(model, currentState);
-			//evaluates the result based on score and cost
-			//prioritizing score primarily and cost secondarily
-			if(utilCompare(opponentScore, score)) {
-				score = opponentScore;
+			Pair<Double, Integer> opponentUtility = miniMaxHelp(model, currentState);
+			Pair<Double, Integer> resultingUtilityOfAction = new Pair<Double, Integer>(
+				-opponentUtility.getFirst(),
+				opponentUtility.getSecond() + model.getCost(state, validActions[i])
+			);
+			//evaluates the result based on bestUtility and cost
+			//prioritizing bestUtility primarily and cost secondarily
+			if(utilCompare(resultingUtilityOfAction, bestUtility)) {
+				bestUtility = resultingUtilityOfAction;
 				bestMove = validActions[i];
 			}
 		}
 		return bestMove;
 	}
 
-	private Pair<Double, Integer> miniMaxHelp(Model<StateClass, ActionClass> model, StateClass state) {
+	private Pair<Double, Integer> miniMaxHelp(Model<StateClass, ActionClass> model,
+											  StateClass state) {
 		//check if is terminal state
 		if(model.getIsTerminal(state)) {
-			Pair<Double, Integer> output = new Pair<Double, Integer>(Double.valueOf(model.getUtility(state)), 0);
-			return output;
+			if(model.getUtility() == 0) {
+				return new Pair<Double, Integer>(0.0, 0);
+			} else {
+				return new Pair<Double, Integer>(-1.0, 0);
+			}
 		}
 
 		ActionClass[] validActions = model.getActions(state);
-		Pair<Double, Integer> score = new Pair<Double, Integer>(Double.MIN_VALUE, Integer.MAX_VALUE);
+		Pair<Double, Integer> bestUtility = new Pair<Double, Integer>(Double.NEGATIVE_INFINITY,
+																	  Integer.MAX_VALUE);
+
 		for(int i = 0; i < validActions.length; i++) {
 			StateClass currentState = model.getResult(state, validActions[i]);
 
-			Pair<Double, Integer> opponentScore = miniMaxHelp(model, currentState);
-			//evaluates the result based on score and cost
-			//prioritizing score primarily and cost secondarily
-			if(utilCompare(opponentScore, score)) {
-				score = opponentScore;
+			Pair<Double, Integer> opponentUtility = miniMaxHelp(model, currentState);
+			Pair<Double, Integer> resultingUtilityOfAction = new Pair<Double, Integer>(
+				-opponentUtility.getFirst(),
+				opponentUtility.getSecond() + model.getCost(state, validActions[i])
+			);
+			//evaluates the result based on bestUtility and cost
+			//prioritizing bestUtility primarily and cost secondarily
+			if(utilCompare(resultingUtilityOfAction, bestUtility)) {
+				bestUtility = resultingUtilityOfAction;
 			}
 		}
-		return score;
+		return bestUtility;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param firstUtil
 	 * @param secondUtil
 	 * @return true if the first is better than second
@@ -71,7 +90,10 @@ public class AI <StateClass, ActionClass> {
 		if(firstUtil.getFirst()>secondUtil.getFirst()) {
 			return true;
 		}
-		if(firstUtil.getFirst() == secondUtil.getFirst() && firstUtil.getSecond() < secondUtil.getSecond()) {
+		if(
+			firstUtil.getFirst() == secondUtil.getFirst() &&
+			firstUtil.getSecond() < secondUtil.getSecond()
+		) {
 			return true;
 		}
 		return false;

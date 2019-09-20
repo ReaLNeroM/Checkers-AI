@@ -2,6 +2,11 @@ public class CoordinatePair {
     Integer rowNumber;
     Integer columnNumber;
 
+    public CoordinatePair(CoordinatePair coordinatePair){
+        rowNumber = coordinatePair.getRowNumber();
+        columnNumber = coordinatePair.getColumnNumber();
+    }
+
     public CoordinatePair(String pairString){
         if('A' <= pairString.charAt(0) && pairString.charAt(0) <= 'Z'){
             this.rowNumber = Integer.valueOf((int) pairString.charAt(0) - (int) 'A');

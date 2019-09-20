@@ -1,8 +1,13 @@
 public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 	private CheckersActions checkersActionsImplementation = new CheckersActions();
+	private Integer numberOfMovesForTie = 20;
 
 	public int Utility(CheckersState state){
 		CheckersAction[] possibleActions = checkersActionsImplementation.Actions(state);
+
+		if(state.getNumberOfMovesDone() >= numberOfMovesForTie) {
+			return 0;
+		}
 
 		if(possibleActions.length == 0){
 			if(state.getNextPlayer().toInteger() == 2){
@@ -18,7 +23,7 @@ public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 
 	@Override
 	public boolean isTerminal(CheckersState state) {
-		if(state.getNumberOfMovesDone() >= 24) {
+		if(state.getNumberOfMovesDone() >= numberOfMovesForTie) {
 			return true;
 		}
 		CheckersAction[] possibleActions = checkersActionsImplementation.Actions(state);

@@ -126,40 +126,52 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		}
 
 		Board currentBoard = resultingBoardAfterPartialAction(state, partialAction);
+		ArrayList<CoordinatePair> captureInitialPositions = new ArrayList<CoordinatePair>();
 
-		ArrayList<CheckersAction> possibleCaptures = new ArrayList<CheckersAction>();
-		for(int i = 0; i < currentBoard.getSize(); i++){
-			for(int j = 0; j < currentBoard.getSize(); j++){
-				CoordinatePair initialPosition = new CoordinatePair(i, j);
-				for(int deltaY = -2; deltaY <= 2; deltaY += 4){
-					for(int deltaX = -2; deltaX <= 2; deltaX += 4){
-						CoordinatePair targetPosition = new CoordinatePair(
-							i + deltaY, j + deltaX
-						);
-						CoordinatePair capturePosition = new CoordinatePair(
-							i + deltaY / 2, j + deltaX / 2
-						);
+		if(partialAction.getNumberOfJumps() != 0){
+			Jump lastJump = partialAction.getJumps()[partialAction.getJumps().length - 1];
+			CoordinatePair initialPosition = new CoordinatePair(lastJump.getTargetPosition());
+		} else {
+			for(int i = 0; i < currentBoard.getSize(); i++){
+				for(int j = 0; j < currentBoard.getSize(); j++){
+					CoordinatePair initialPosition = new CoordinatePair(i, j);
+					captureInitialPositions.add(initialPosition);
+				}
+			}
+		}
 
-						Jump jumpAttempt = new Jump(
-							initialPosition, targetPosition, capturePosition
-						);
-						if(verifyJump(currentBoard, jumpAttempt, state)){
-							Jump[] resultingJumps = new Jump[partialAction.getNumberOfJumps() + 1];
+		ArrayList<CheckersAction> validCaptures = new ArrayList<CheckersAction>();
+		for(CoordinatePair initialPosition : captureInitialPositions){
+			for(int deltaY = -2; deltaY <= 2; deltaY += 4){
+				for(int deltaX = -2; deltaX <= 2; deltaX += 4){
+					CoordinatePair targetPosition = new CoordinatePair(
+						initialPosition.getRowNumber() + deltaY,
+						initialPosition.getColumnNumber() + deltaX
+					);
+					CoordinatePair capturePosition = new CoordinatePair(
+						initialPosition.getRowNumber() + deltaY / 2,
+						initialPosition.getColumnNumber() + deltaX / 2
+					);
 
-							Jump[] originalJumps = partialAction.getJumps();
-							for(int k = 0; k < originalJumps.length; k++){
-								resultingJumps[k] = originalJumps[k];
-							}
-							resultingJumps[partialAction.getNumberOfJumps()] = jumpAttempt;
+					Jump jumpAttempt = new Jump(
+						initialPosition, targetPosition, capturePosition
+					);
+					if(verifyJump(currentBoard, jumpAttempt, state)){
+						Jump[] resultingJumps = new Jump[partialAction.getNumberOfJumps() + 1];
 
-							possibleCaptures.add(new CheckersAction(resultingJumps));
+						Jump[] originalJumps = partialAction.getJumps();
+						for(int k = 0; k < originalJumps.length; k++){
+							resultingJumps[k] = originalJumps[k];
 						}
+						resultingJumps[partialAction.getNumberOfJumps()] = jumpAttempt;
+
+						validCaptures.add(new CheckersAction(resultingJumps));
 					}
 				}
 			}
 		}
 
-		return possibleCaptures.toArray(new CheckersAction[possibleCaptures.size()]);
+		return validCaptures.toArray(new CheckersAction[validCaptures.size()]);
 	}
 
 	public CheckersAction[] getSkips(CheckersState state, CheckersAction partialAction){
@@ -193,8 +205,11 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 	}
 
 	public CheckersAction[] Actions(CheckersState state){
-		ArrayList<CheckersAction> validMoves = new ArrayList<CheckersAction>();
+		if(state.getNumberOfMovesDone() >= 20){
+			return new CheckersAction[0];
+		}
 
+		ArrayList<CheckersAction> validMoves = new ArrayList<CheckersAction>();
 		Queue<CheckersAction> partialMoveFrontier = new LinkedList<CheckersAction>();
 		partialMoveFrontier.add(new CheckersAction(new Jump[0]));
 

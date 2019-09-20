@@ -1,24 +1,20 @@
 public class GameRunner {
 	public static void main(String args[]) {
-
 		CheckersModel model = new CheckersModel();
 
 		CheckersState currentState = model.getInitialState(4);
-
 		System.out.println(currentState.toString());
 
-
 		AI<CheckersState, CheckersAction> aiInstance = new AI<CheckersState, CheckersAction>();
-
 		for(int i = 0; i < 200; i++){
 			CheckersAction nextAction = aiInstance.miniMax(model, currentState);
-			CheckersState resultingState = model.getResult(currentState, nextAction);
-			if(resultingState != null) {
+			if(nextAction != null) {
+				CheckersState resultingState = model.getResult(currentState, nextAction);
 				System.out.println(resultingState.toString());
+				currentState = resultingState;
 			} else {
 				break;
 			}
-			currentState = resultingState;
 		}
 
 		if(model.getUtility(currentState) == 1) {

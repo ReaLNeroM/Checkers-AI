@@ -20,21 +20,18 @@ public class CheckersAction implements Action {
 			Character isCaptureCharacter = JumpString.charAt(3 * i + 2);
 			boolean isCapture = (isCaptureCharacter == 'x');
 
-			Integer rowNumberAverage = (
-				jumpCoordinates.get(i).getRowNumber() +
-				jumpCoordinates.get(i + 1).getRowNumber()
-			) / 2;
-			Integer columnNumberAverage = (
-				jumpCoordinates.get(i).getColumnNumber() +
-				jumpCoordinates.get(i + 1).getColumnNumber()
-			) / 2;
-
-			CoordinatePair captureCoordinates = new CoordinatePair(
-				rowNumberAverage, columnNumberAverage
-			);
-
 			Jump nextJump = null;
 			if(isCapture){
+				// If a move is a capture, we know the capture happened in the cell between the
+				// initialPosition and targetPosition.
+				Integer rowNumberAverage = (jumpCoordinates.get(i).getRowNumber() +
+											jumpCoordinates.get(i + 1).getRowNumber()) / 2;
+				Integer columnNumberAverage = (jumpCoordinates.get(i).getColumnNumber() +
+							     			   jumpCoordinates.get(i + 1).getColumnNumber()) / 2;
+				CoordinatePair captureCoordinates = new CoordinatePair(
+					rowNumberAverage, columnNumberAverage
+				);
+
 				intermediateJumps.add(new Jump(
 					jumpCoordinates.get(i), jumpCoordinates.get(i + 1), captureCoordinates
 				));

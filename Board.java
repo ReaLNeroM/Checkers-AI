@@ -28,9 +28,7 @@ public class Board {
 	}
 
 	public boolean hasPiece(CoordinatePair coordinatePair) {
-		Piece currentPiece = this.getPiece(coordinatePair);
-
-		return (currentPiece != null && !currentPiece.isEmpty());
+		return !getPiece(coordinatePair).isEmpty();
 	}
 
 	public Piece getPiece(CoordinatePair coordinatePair){
