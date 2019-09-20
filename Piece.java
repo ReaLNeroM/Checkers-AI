@@ -1,27 +1,27 @@
 public class Piece {
-	private Color color;
+	private Player owner;
 	private boolean isKing;
 
-	public Piece(Color color) {
-		this.color = color;
-		isKing = false;
+	public Piece(Player owner) {
+		this.owner = owner;
+		this.isKing = false;
 	}
 
-	public Piece(Color color, boolean isKing) {
-		this.color = color;
+	public Piece(Player owner, boolean isKing) {
+		this.owner = owner;
 		this.isKing = isKing;
 	}
 
-	public Color getColor() {
-		return color;
+	public boolean isEmpty(){
+		return (owner.toInteger() == 0);
+	}
+
+	public Player getOwner() {
+		return owner;
 	}
 
 	public boolean getIsKing() {
 		return isKing;
-	}
-
-	public void promote() {
-		isKing = true;
 	}
 
 	@Override

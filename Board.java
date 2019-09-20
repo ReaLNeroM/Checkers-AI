@@ -28,15 +28,9 @@ public class Board {
 	}
 
 	public boolean hasPiece(CoordinatePair coordinatePair) {
-		if(!withinBounds(coordinatePair)){
-			return false;
-		}
+		Piece currentPiece = this.getPiece(coordinatePair);
 
-		return (board[coordinatePair.getRowNumber()][coordinatePair.getColumnNumber()].getColor().toString() != "-");
-	}
-
-	public Piece[][] getBoard(){
-		return board;
+		return (currentPiece == null) || (currentPiece.isEmpty());
 	}
 
 	public Piece getPiece(CoordinatePair coordinatePair){
@@ -45,6 +39,10 @@ public class Board {
 		}
 
 		return board[coordinatePair.getRowNumber()][coordinatePair.getColumnNumber()];
+	}
+
+	public Piece[][] getBoard(){
+		return board;
 	}
 
 	public Integer getSize(){

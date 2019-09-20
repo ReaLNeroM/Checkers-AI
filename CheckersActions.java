@@ -93,6 +93,8 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			resultingBoard.setPiece(jump.getCapturePosition(), new Piece(new Color(0)));
 		}
 
+		// note the tricky promotion logic here: a black piece can exist on the first row without
+		// getting promoted. It's once a piece jumps that the promotion logic triggers.
 		Piece newPiece = null;
 		newPiece = new Piece(new Color(jumpingPiece.getColor()),
 							 jumpingPiece.getIsKing() ||
@@ -102,7 +104,8 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		return resultingBoard;
 	}
 
-	public Board resultingBoardAfterPartialAction(CheckersState state, CheckersAction partialAction){
+	public Board resultingBoardAfterPartialAction(CheckersState state,
+												  CheckersAction partialAction){
 		Board currentBoard = state.getBoard();
 
 		for(Jump jump : partialAction.getJumps()){

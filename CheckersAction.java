@@ -19,9 +19,18 @@ public class CheckersAction implements Action {
 			// either a normal jump or a capture jump respectively.
 			Character isCaptureCharacter = JumpString.charAt(3 * i + 2);
 			boolean isCapture = (isCaptureCharacter == 'x');
+
+			Integer rowNumberAverage = (
+				jumpCoordinates.get(i).getRowNumber() +
+				jumpCoordinates.get(i + 1).getRowNumber()
+			) / 2;
+			Integer columnNumberAverage = (
+				jumpCoordinates.get(i).getColumnNumber() +
+				jumpCoordinates.get(i + 1).getColumnNumber()
+			) / 2;
+
 			CoordinatePair captureCoordinates = new CoordinatePair(
-				(jumpCoordinates.get(i).getRowNumber() + jumpCoordinates.get(i + 1).getRowNumber()) / 2,
-				(jumpCoordinates.get(i).getColumnNumber() + jumpCoordinates.get(i + 1).getColumnNumber()) / 2
+				rowNumberAverage, columnNumberAverage
 			);
 
 			Jump nextJump = null;
