@@ -18,7 +18,7 @@ public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 
 	@Override
 	public boolean isTerminal(CheckersState state) {
-		if(state.getNumberOfMovesDone() >= 20) {
+		if(state.getNumberOfMovesDone() >= 18) {
 			return true;
 		}
 		CheckersAction[] possibleActions = checkersActionsImplementation.Actions(state);

@@ -11,7 +11,6 @@ public class GameRunner {
 		AI<CheckersState, CheckersAction> aiInstance = new AI<CheckersState, CheckersAction>();
 
 		for(int i = 0; i < 200; i++){
-			//CheckersAction nextAction = aiInstance.randomPlay(model, currentState);
 			CheckersAction nextAction = aiInstance.miniMax(model, currentState);
 			CheckersState resultingState = model.getResult(currentState, nextAction);
 			if(resultingState != null) {

@@ -64,19 +64,16 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 	public CheckersState getResult(CheckersState state, CheckersAction action){
 		return this.ResultImplementation.Result(state, action);
 	}
-	public int getCost(CheckersState state, CheckersAction action){
+	public Integer getCost(CheckersState state, CheckersAction action){
 		return this.CostImplementation.Cost(state, action);
 	}
-	public int getUtility(CheckersState state){
+	public Integer getUtility(CheckersState state){
 		return this.UtilityImplementation.Utility(state);
 	}
-	public int getHeuristic(CheckersState state){
+	public Integer getHeuristic(CheckersState state){
 		return this.HeuristicImplementation.Heuristic(state);
 	}
-
-	@Override
-	public boolean getIsTerminal(CheckersState s) {
-		
-		return UtilityImplementation.isTerminal(s);
+	public boolean getIsTerminal(CheckersState state) {
+		return UtilityImplementation.isTerminal(state);
 	}
 }
