@@ -1,4 +1,3 @@
-
 public class CheckersState implements State {
 	Board board;
 	Player nextPlayer;
