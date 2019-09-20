@@ -1,44 +1,36 @@
 
 public class CheckersState implements State {
-	private Board board;
-	private String player;
-	public CheckersState(Board board, String player) {
+	Board board;
+	Color color;
+	Integer numberOfTurns;
+
+	public CheckersState(Board board, Color color){
 		this.board = board;
-		this.player = player;
+		this.color = color;
+		this.numberOfTurns = 0;
 	}
 
-	@Override
-	public State getInitialState() {
-		// TODO Auto-generated method stub
-		return null;
+	public CheckersState(Board board, Color color, Integer numberOfTurns){
+		this.board = board;
+		this.color = color;
+		this.numberOfTurns = numberOfTurns;
 	}
 
-	@Override
-	public boolean isWinState() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public String getPlayer() {
-		return player;
-	}
-	
-	public Board getBoard() {
+	public Board getBoard(){
 		return board;
 	}
-	
-	/**
-	 * 
-	 * @return returns the player the turn changed into in string
-	 */
-	public String changeSides() {
-		if(player.endsWith("W")) {
-			player = "B";
-			return "B";
-		}else {
-			player = "W";
-			return "W";
-		}
+
+	public Color getNextPlayerColor(){
+		return color;
 	}
 
+	public Integer getNumberOfMovesDone(){
+		return numberOfTurns;
+	}
+
+	public String toString(){
+		return "[Board=" + board.toString() + "," +
+			   " color=" + color.toString() + "," +
+			   " numberOfTurns=" + numberOfTurns.toString() + "]";
+	}
 }

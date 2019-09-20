@@ -1,3 +1,3 @@
-public interface Actions {
-	Action[] Actions(State s);
+public interface Actions<StateClass, ActionClass> {
+	ActionClass[] Actions(StateClass s);
 }

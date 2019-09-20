@@ -1,3 +1,3 @@
-public interface Utility {
-	int Utility(State s);
+public interface Utility <StateClass, ActionClass> {
+	int Utility(StateClass s);
 }

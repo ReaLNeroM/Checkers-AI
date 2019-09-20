@@ -1,5 +1,5 @@
-public interface Model {
-	
+public interface Model <StateClass, ActionClass> {
+
 	//TODO: to be deleted
 	//	Actions ActionsImplementation;
 	//	Result ResultImplementation;
@@ -7,9 +7,9 @@ public interface Model {
 	//	Utility UtilityImplementation;
 	//	Heuristic HeuristicImplementation;
 
-	public Action[] getActions(State s);
-	public State getResult(State s, Action a);
-	public int getCost(State s, Action a);
-	public int getHeuristic(State s);
-	public int getUtility(State s);
+	public ActionClass[] getActions(StateClass s);
+	public StateClass getResult(StateClass s, ActionClass a);
+	public int getCost(StateClass s, ActionClass a);
+	public int getHeuristic(StateClass s);
+	public int getUtility(StateClass s);
 }

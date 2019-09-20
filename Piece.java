@@ -1,32 +1,31 @@
-
 public class Piece {
-	private String color;
+	private Color color;
 	private boolean isKing;
-	
-	public Piece(String color) {
+
+	public Piece(Color color) {
 		this.color = color;
 		isKing = false;
 	}
-	
-	public Piece(String color, boolean king) {
+
+	public Piece(Color color, boolean king) {
 		this.color = color;
 		isKing = king;
 	}
-	
-	public String getColor() {
+
+	public Color getColor() {
 		return color;
 	}
-	
-	public boolean getStatus() {
+
+	public boolean getIsKing() {
 		return isKing;
 	}
-	
+
 	public void promote() {
 		isKing = true;
 	}
 
 	@Override
 	public String toString() {
-		return "Piece [color=" + color + ", isKing?=" + isKing + "]";
+		return "Piece [color=" + color.toString() + ", isKing?=" + isKing + "]";
 	}
 }

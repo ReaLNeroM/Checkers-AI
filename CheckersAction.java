@@ -1,51 +1,103 @@
+import java.util.ArrayList;
+import java.lang.StringBuilder;
+
 public class CheckersAction implements Action {
-	private State[] intermediateStates;
+	private Jump[] intermediateJumps;
 
-	private ArrayList<Pair<Integer, Integer>> decodeMoveString(String moveDescription){
-		String[] namesOfCellsInMove = moveDescription.split("x|-");
+	private Jump[] decodeJumpString(String JumpString){
+		String[] namesOfCellsInJump = JumpString.split("x|-");
 
-		ArrayList<Pair<Integer, Integer>> coordinatesOfCellsInMove =
-			new ArrayList<Pair<Integer, Integer>>();
+		ArrayList<CoordinatePair> jumpCoordinates = new ArrayList<CoordinatePair>();
 
-		for(String nameOfCell : namesOfCellsInMove){
-			int rowNumber = nameOfCell.get(0).getNumericValue() - 'A'.getNumericValue()
-			int columnNumber = nameOfCell.get(0).getNumericValue() - '1'.getNumericValue();
-			coordinatesOfCellsInMove.append(Pair(rowNumber, columnNumber))
+		for(String coordinatesOfCell : namesOfCellsInJump){
+			jumpCoordinates.add(new CoordinatePair(coordinatesOfCell));
 		}
 
-		return coordinatesOfCellsInMove;
-	}
+		ArrayList<Jump> intermediateJumps = new ArrayList<Jump>();
+		for(int i = 0; i < jumpCoordinates.size() - 1; i++){
+			// Every 3rd character starting from the second one is either '-' or 'x', indicating
+			// either a normal jump or a capture jump respectively.
+			Character isCaptureCharacter = JumpString.charAt(3 * i + 2);
+			boolean isCapture = (isCaptureCharacter == 'x');
+			CoordinatePair captureCoordinates = new CoordinatePair(
+				(jumpCoordinates.get(i).getRowNumber() + jumpCoordinates.get(i + 1).getRowNumber()) / 2,
+				(jumpCoordinates.get(i).getColumnNumber() + jumpCoordinates.get(i + 1).getColumnNumber()) / 2
+			);
 
-	CheckersAction(State[] intermediateStates){
-		this.intermediateStates = intermediateStates;
-	}
-
-	CheckersAction(State startingState, String moveDescription){
-		Board currentBoard = startingState.getBoard();
-
-		ArrayList<Pair<Integer, Integer>> coordinatesOfCellsInMove = decodeMoveString(moveDescription);
-
-		ArrayList<State> intermediateStates;
-		for(int i = 0; i < coordinatesOfCellsInMove.length() - 1; i++){
-			Pair<Integer, Integer>
+			Jump nextJump = null;
+			if(isCapture){
+				intermediateJumps.add(new Jump(
+					jumpCoordinates.get(i),
+					jumpCoordinates.get(i + 1),
+					captureCoordinates
+				));
+			} else {
+				intermediateJumps.add(new Jump(
+					jumpCoordinates.get(i),
+					jumpCoordinates.get(i + 1)
+				));
+			}
 		}
 
-		this.intermediateStates = intermediateStates.toArray();
+		return intermediateJumps.toArray(new Jump[intermediateJumps.size()]);
+	}
+
+	CheckersAction(Jump[] intermediateJumps){
+		this.intermediateJumps = intermediateJumps;
+	}
+
+	CheckersAction(String JumpString){
+		this.intermediateJumps = decodeJumpString(JumpString);
+	}
+
+	public Jump[] getJumps(){
+		return intermediateJumps;
+	}
+
+	public int getNumberOfJumps(){
+		return intermediateJumps.length;
+	}
+
+	public Integer getNumberOfCaptures(){
+		int captures = 0;
+		for(Jump currentJump : intermediateJumps){
+			captures += currentJump.isCapture() ? 1 : 0;
+		}
+
+		return Integer.valueOf(captures);
+	}
+
+	public boolean equals(CheckersAction comparisonAction) {
+		if(getNumberOfJumps() != comparisonAction.getNumberOfJumps()) {
+			return false;
+		}
+
+		for(int i = 0; i < intermediateJumps.length; i++) {
+			if (!intermediateJumps[i].equals(comparisonAction.getJumps()[i])) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public String toString(){
+		StringBuilder actionString = new StringBuilder("");
 
-	}
+		if(intermediateJumps.length >= 1) {
+			actionString.append(intermediateJumps[0].getInitialPosition().toString());
+		}
 
-	boolean isValid(){
+		for(Jump currentJump : intermediateJumps){
+			if(currentJump.isCapture()){
+				actionString.append("x");
+			} else {
+				actionString.append("-");
+			}
 
-	}
+			actionString.append(currentJump.getTargetPosition().toString());
+		}
 
-	public State getStartState(){
-		return intermediateStates[0];
-	}
-
-	public State getEndState(){
-		return intermediateStates[intermediateStates.length() - 1];
+		return actionString.toString();
 	}
 }

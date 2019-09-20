@@ -1,0 +1,233 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.lang.Math;
+import java.util.Queue;
+
+public class CheckersActions implements Actions <CheckersState, CheckersAction> {
+	private boolean verifyJump(Board b, Jump j, CheckersState s){
+		CoordinatePair initialPosition = j.getInitialPosition();
+		CoordinatePair targetPosition = j.getTargetPosition();
+
+		if(!b.withinBounds(initialPosition) || !b.withinBounds(targetPosition)) {
+			return false;
+		}
+
+		if(!b.hasPiece(initialPosition)){
+			return false;
+		}
+
+		Piece jumpingPiece = b.getPiece(initialPosition);
+		if(!jumpingPiece.getColor().equals(s.getNextPlayerColor())){
+			return false;
+		}
+		if(b.hasPiece(j.getTargetPosition())){
+			return false;
+		}
+
+		if(j.isCapture()){
+			CoordinatePair capturePosition = j.getCapturePosition();
+
+			if(!b.hasPiece(capturePosition)){
+				return false;
+			}
+			if(b.getPiece(capturePosition).getColor().equals(s.getNextPlayerColor())){
+				return false;
+			}
+
+			int deltaY = targetPosition.getRowNumber() - initialPosition.getRowNumber();
+			int deltaX = targetPosition.getColumnNumber() - initialPosition.getColumnNumber();
+
+			// captures must be done two steps diagonally
+			if(Math.abs(deltaY) != 2 || Math.abs(deltaX) != 2){
+				return false;
+			}
+
+			// Non-king pieces can only capture forwards
+			if(!jumpingPiece.getIsKing()) {
+				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -2){
+					return false;
+				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 2) {
+					return false;
+				}				
+			}
+		} else {
+			int deltaY = targetPosition.getRowNumber() - initialPosition.getRowNumber();
+			int deltaX = targetPosition.getColumnNumber() - initialPosition.getColumnNumber();
+
+			// skips must be done one step diagonally
+			if(Math.abs(deltaY) != 1 || Math.abs(deltaX) != 1){
+				return false;
+			}
+
+			// Non-king pieces can only skip forwards
+			if(!jumpingPiece.getIsKing()) {
+				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -1){
+					return false;
+				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 1) {
+					return false;
+				}				
+			}
+		}
+
+		return true;
+	}
+
+	private boolean isAtPromotionLocation(Board b, CoordinatePair c, Piece p){
+		if(c.getRowNumber() == 0){
+			return true;
+		}
+		if(c.getRowNumber() + 1 == b.getSize()){
+			return true;
+		}
+
+		return false;
+	}
+
+	private Board resultingBoardAfterJump(Board b, Jump j){
+		Board resultingBoard = new Board(b);
+
+		Piece jumpingPiece = resultingBoard.getPiece(j.getInitialPosition());
+
+		resultingBoard.setPiece(j.getInitialPosition(), new Piece(new Color(0)));
+		if(j.isCapture()){
+			resultingBoard.setPiece(j.getCapturePosition(), new Piece(new Color(0)));
+		}
+
+		Piece newPiece = null;
+		newPiece = new Piece(new Color(jumpingPiece.getColor()),
+							 jumpingPiece.getIsKing() ||
+							 isAtPromotionLocation(b, j.getTargetPosition(), jumpingPiece));
+		resultingBoard.setPiece(j.getTargetPosition(), jumpingPiece);
+
+		return resultingBoard;
+	}
+
+	public Board resultingBoardAfterPartialAction(CheckersState s, CheckersAction partialAction){
+		Board currentBoard = s.getBoard();
+
+		for(Jump j : partialAction.getJumps()){
+			if(!verifyJump(currentBoard, j, s)){
+				return null;
+			}
+
+			currentBoard = resultingBoardAfterJump(currentBoard, j);
+		}
+
+		return currentBoard;
+	}
+
+	public CheckersAction[] getCaptures(CheckersState s, CheckersAction partialAction){
+		if(partialAction.getNumberOfJumps() != partialAction.getNumberOfCaptures()) {
+			// Captures can't be done after a skip
+			return new CheckersAction[0];
+		}
+
+		Board currentBoard = resultingBoardAfterPartialAction(s, partialAction);
+
+		ArrayList<CheckersAction> possibleCaptures = new ArrayList<CheckersAction>();
+		for(int i = 0; i < currentBoard.getSize(); i++){
+			for(int j = 0; j < currentBoard.getSize(); j++){
+				CoordinatePair initialPosition = new CoordinatePair(i, j);
+				for(int deltaY = -2; deltaY <= 2; deltaY += 4){
+					for(int deltaX = -2; deltaX <= 2; deltaX += 4){
+						CoordinatePair targetPosition = new CoordinatePair(
+							i + deltaY, j + deltaX
+						);
+						CoordinatePair capturePosition = new CoordinatePair(
+							i + deltaY / 2, j + deltaX / 2
+						);
+
+						Jump jumpAttempt = new Jump(
+							initialPosition, targetPosition, capturePosition
+						);
+						if(verifyJump(currentBoard, jumpAttempt, s)){
+							Jump[] resultingJumps = new Jump[partialAction.getNumberOfJumps() + 1];
+
+							Jump[] originalJumps = partialAction.getJumps();
+							for(int k = 0; k < originalJumps.length; k++){
+								resultingJumps[k] = originalJumps[k];
+							}
+							resultingJumps[partialAction.getNumberOfJumps()] = jumpAttempt;
+
+							possibleCaptures.add(new CheckersAction(resultingJumps));
+						}
+					}
+				}
+			}
+		}
+
+		return possibleCaptures.toArray(new CheckersAction[possibleCaptures.size()]);
+	}
+
+	public CheckersAction[] getSkips(CheckersState s, CheckersAction partialAction){
+		if(partialAction.getNumberOfJumps() != 0){
+			// Skips must be the first move
+			return new CheckersAction[0];
+		}
+
+		Board currentBoard = resultingBoardAfterPartialAction(s, partialAction);
+
+		ArrayList<CheckersAction> possibleSkips = new ArrayList<CheckersAction>();
+		for(int i = 0; i < currentBoard.getSize(); i++){
+			for(int j = 0; j < currentBoard.getSize(); j++){
+				CoordinatePair initialPosition = new CoordinatePair(i, j);
+				for(int deltaY = -1; deltaY <= 1; deltaY += 2){
+					for(int deltaX = -1; deltaX <= 1; deltaX += 2){
+						CoordinatePair targetPosition = new CoordinatePair(
+							i + deltaY, j + deltaX
+						);
+
+						Jump jumpAttempt = new Jump(initialPosition, targetPosition);
+						if(verifyJump(currentBoard, jumpAttempt, s)){
+							possibleSkips.add(new CheckersAction(new Jump[]{jumpAttempt}));
+						}
+					}
+				}
+			}
+		}
+
+		return possibleSkips.toArray(new CheckersAction[possibleSkips.size()]);
+	}
+
+	public CheckersAction[] Actions(CheckersState s){
+		// After 200 moves, declare this a loss for the next player.
+		if(s.getNumberOfMovesDone() >= 200) {
+			return new CheckersAction[0];
+		}
+		
+		ArrayList<CheckersAction> validMoves = new ArrayList<CheckersAction>();
+
+		Queue<CheckersAction> partialMoveFrontier = new LinkedList<CheckersAction>();
+		partialMoveFrontier.add(new CheckersAction(new Jump[0]));
+
+		int mostCapturesPossible = 0;
+		while(!partialMoveFrontier.isEmpty()){
+			CheckersAction currentPartialAction = partialMoveFrontier.remove();
+
+			if(currentPartialAction.getNumberOfCaptures() > mostCapturesPossible){
+				validMoves.clear();
+			}
+			if(
+				currentPartialAction.getNumberOfJumps() != 0 &&
+				currentPartialAction.getNumberOfCaptures() >= mostCapturesPossible
+			){
+				validMoves.add(currentPartialAction);
+			}
+
+			CheckersAction[] captures = getCaptures(s, currentPartialAction);
+			CheckersAction[] skips = getSkips(s, currentPartialAction);
+
+			for(CheckersAction a : captures){
+				partialMoveFrontier.add(a);
+			}
+
+			if(captures.length == 0){
+				for(CheckersAction a : skips){
+					partialMoveFrontier.add(a);
+				}
+			}
+		}
+
+		return validMoves.toArray(new CheckersAction[validMoves.size()]);
+	}
+}

@@ -1,4 +1,4 @@
 public interface State {
-	State getInitialState();
-	boolean isWinState();
+	public Color getNextPlayerColor();
+	public String toString();
 }
