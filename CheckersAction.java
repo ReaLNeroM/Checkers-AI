@@ -20,8 +20,8 @@ public class CheckersAction implements Action {
 			Character isCaptureCharacter = JumpString.charAt(3 * i + 2);
 			boolean isCapture = (isCaptureCharacter == 'x');
 			CoordinatePair captureCoordinates = new CoordinatePair(
-				(jumpCoordinates.get(i).getFirst() + jumpCoordinates.get(i + 1).getFirst()) / 2,
-				(jumpCoordinates.get(i).getSecond() + jumpCoordinates.get(i + 1).getSecond()) / 2
+				(jumpCoordinates.get(i).getRowNumber() + jumpCoordinates.get(i + 1).getRowNumber()) / 2,
+				(jumpCoordinates.get(i).getColumnNumber() + jumpCoordinates.get(i + 1).getColumnNumber()) / 2
 			);
 
 			Jump nextJump = null;

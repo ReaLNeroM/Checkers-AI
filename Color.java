@@ -10,6 +10,10 @@ public class Color {
 		color = currentColor;
 	}
 
+	public Color(Color currentColor){
+		this(currentColor.toInteger());
+	}
+
 	public Color(Integer currentPlayer){
 		switch (currentPlayer){
 			case 1:

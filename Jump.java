@@ -50,7 +50,7 @@ public class Jump {
 		if(this.isCapture() != comparisonJump.isCapture()) {
 			return false;
 		}
-		if(this.isCapture() && capturePosition != comparisonJump.getCapturePosition()) {
+		if(this.isCapture() && !capturePosition.equals(comparisonJump.getCapturePosition())) {
 			return false;
 		}
 

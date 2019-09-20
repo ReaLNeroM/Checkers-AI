@@ -19,17 +19,17 @@ public class CoordinatePair {
         this.columnNumber = columnNumber;
     }
 
-    public Integer getFirst(){
+    public Integer getRowNumber(){
         return rowNumber;
     }
 
-    public Integer getSecond(){
+    public Integer getColumnNumber(){
         return columnNumber;
     }
 
     public boolean equals(CoordinatePair comparisonCoordinatePair) {
-    	return rowNumber == comparisonCoordinatePair.getFirst() &&
-    		   columnNumber == comparisonCoordinatePair.getSecond();
+    	return rowNumber == comparisonCoordinatePair.getRowNumber() &&
+    		   columnNumber == comparisonCoordinatePair.getColumnNumber();
     }
 
     public String toString(String pairString){

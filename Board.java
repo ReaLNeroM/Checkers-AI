@@ -19,8 +19,8 @@ public class Board {
 
 	public boolean withinBounds(CoordinatePair c){
 		if(
-			0 <= c.getFirst() && c.getFirst() < size &&
-			0 <= c.getSecond() && c.getSecond() < size
+			0 <= c.getRowNumber() && c.getRowNumber() < size &&
+			0 <= c.getColumnNumber() && c.getColumnNumber() < size
 		){
 			return true;
 		}
@@ -32,7 +32,7 @@ public class Board {
 			return false;
 		}
 
-		return (board[c.getFirst()][c.getSecond()].getColor().toString() != "-");
+		return (board[c.getRowNumber()][c.getColumnNumber()].getColor().toString() != "-");
 	}
 
 	public Piece[][] getBoard(){
@@ -44,7 +44,7 @@ public class Board {
 			return null;
 		}
 
-		return board[c.getFirst()][c.getSecond()];
+		return board[c.getRowNumber()][c.getColumnNumber()];
 	}
 
 	public Integer getSize(){
@@ -56,7 +56,7 @@ public class Board {
 			return;
 		}
 
-		board[c.getFirst()][c.getSecond()] = p;
+		board[c.getRowNumber()][c.getColumnNumber()] = p;
 	}
 
 	public String toString(){

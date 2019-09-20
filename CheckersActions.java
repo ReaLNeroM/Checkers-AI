@@ -34,8 +34,8 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 				return false;
 			}
 
-			int deltaY = targetPosition.getFirst() - initialPosition.getFirst();
-			int deltaX = targetPosition.getSecond() - initialPosition.getSecond();
+			int deltaY = targetPosition.getRowNumber() - initialPosition.getRowNumber();
+			int deltaX = targetPosition.getColumnNumber() - initialPosition.getColumnNumber();
 
 			// captures must be done two steps diagonally
 			if(Math.abs(deltaY) != 2 || Math.abs(deltaX) != 2){
@@ -43,12 +43,16 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			}
 
 			// Non-king pieces can only capture forwards
-			if(!jumpingPiece.getIsKing() && deltaY != -2){
-				return false;
+			if(!jumpingPiece.getIsKing()) {
+				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -2){
+					return false;
+				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 2) {
+					return false;
+				}				
 			}
 		} else {
-			int deltaY = targetPosition.getFirst() - initialPosition.getFirst();
-			int deltaX = targetPosition.getSecond() - initialPosition.getSecond();
+			int deltaY = targetPosition.getRowNumber() - initialPosition.getRowNumber();
+			int deltaX = targetPosition.getColumnNumber() - initialPosition.getColumnNumber();
 
 			// skips must be done one step diagonally
 			if(Math.abs(deltaY) != 1 || Math.abs(deltaX) != 1){
@@ -56,12 +60,27 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			}
 
 			// Non-king pieces can only skip forwards
-			if(!jumpingPiece.getIsKing() && deltaY != -1){
-				return false;
+			if(!jumpingPiece.getIsKing()) {
+				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -1){
+					return false;
+				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 1) {
+					return false;
+				}				
 			}
 		}
 
 		return true;
+	}
+
+	private boolean isAtPromotionLocation(Board b, CoordinatePair c, Piece p){
+		if(c.getRowNumber() == 0){
+			return true;
+		}
+		if(c.getRowNumber() + 1 == b.getSize()){
+			return true;
+		}
+
+		return false;
 	}
 
 	private Board resultingBoardAfterJump(Board b, Jump j){
@@ -73,7 +92,11 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		if(j.isCapture()){
 			resultingBoard.setPiece(j.getCapturePosition(), new Piece(new Color(0)));
 		}
-		//TODO: promote
+
+		Piece newPiece = null;
+		newPiece = new Piece(new Color(jumpingPiece.getColor()),
+							 jumpingPiece.getIsKing() ||
+							 isAtPromotionLocation(b, j.getTargetPosition(), jumpingPiece));
 		resultingBoard.setPiece(j.getTargetPosition(), jumpingPiece);
 
 		return resultingBoard;
@@ -167,6 +190,11 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 	}
 
 	public CheckersAction[] Actions(CheckersState s){
+		// After 200 moves, declare this a loss for the next player.
+		if(s.getNumberOfMovesDone() >= 200) {
+			return new CheckersAction[0];
+		}
+		
 		ArrayList<CheckersAction> validMoves = new ArrayList<CheckersAction>();
 
 		Queue<CheckersAction> partialMoveFrontier = new LinkedList<CheckersAction>();
