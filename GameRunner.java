@@ -3,15 +3,15 @@ public class GameRunner {
 		// System.out.println("---number 4 test:");
 		// Board b1 = new Board(4);
 		// b1.printToConsoleTest();
-		CheckersModel m = new CheckersModel();
+		CheckersModel model = new CheckersModel();
 
-		CheckersState initialState = m.getInitialState(4);
+		CheckersState currentState = model.getcurrentState(4);
 
-		System.out.println(initialState.toString());
+		System.out.println(currentState.toString());
 
-		// CheckersAction[] a = m.getActions(initialState);
+		// CheckersAction[] a = model.getActions(currentState);
 		// for(CheckersAction bb : a){
-		// 	CheckersState resultingState = m.getResult(initialState, bb);
+		// 	CheckersState resultingState = model.getResult(currentState, bb);
 		// 	if(resultingState != null) {
 		// 		System.out.println(resultingState.toString());
 		// 	}
@@ -19,21 +19,21 @@ public class GameRunner {
 
 		AI<CheckersState, CheckersAction> aiInstance = new AI<CheckersState, CheckersAction>();
 
-		for(int i = 0; i < 100; i++){
-			CheckersAction aa = aiInstance.randomPlay(m, initialState);
-			CheckersState resultingState = m.getResult(initialState, aa);
+		for(int i = 0; i < 200; i++){
+			CheckersAction nextAction = aiInstance.randomPlay(model, currentState);
+			CheckersState resultingState = model.getResult(currentState, nextAction);
 			if(resultingState != null) {
 				System.out.println(resultingState.toString());
 			} else {
 				break;
 			}
-			initialState = resultingState;
+			currentState = resultingState;
 		}
-		
-		if(m.getUtility(initialState) == 1) {
+
+		if(model.getUtility(currentState) == 1) {
 			System.out.println("Win for the first player!");
-		} else if(m.getUtility(initialState) == -1){
-			System.out.println("Win for the second player!");			
+		} else if(model.getUtility(currentState) == -1){
+			System.out.println("Win for the second player!");
 		} else {
 			System.out.println("Tie!");
 		}

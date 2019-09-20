@@ -7,8 +7,8 @@ public class AI <StateClass, ActionClass> {
 		randomGenerator = new Random();
 	}
 
-	public ActionClass randomPlay(Model<StateClass, ActionClass> model, StateClass s){
-		ActionClass[] validActions = model.getActions(s);
+	public ActionClass randomPlay(Model<StateClass, ActionClass> model, StateClass state){
+		ActionClass[] validActions = model.getActions(state);
 
 		if(validActions.length == 0){
 			return null;
@@ -18,17 +18,17 @@ public class AI <StateClass, ActionClass> {
 		return validActions[randomIndex];
 	}
 
-	public ActionClass miniMax(Model<StateClass, ActionClass> model, StateClass s){
+	public ActionClass miniMax(Model<StateClass, ActionClass> model, StateClass state){
 		// TODO
 		return null;
 	}
 
-	public ActionClass miniMax_a_b(Model<StateClass, ActionClass> model, StateClass s){
+	public ActionClass miniMax_a_b(Model<StateClass, ActionClass> model, StateClass state){
 		// TODO
 		return null;
 	}
 
-	public ActionClass h_miniMax_a_b(Model<StateClass, ActionClass> model, StateClass s){
+	public ActionClass h_miniMax_a_b(Model<StateClass, ActionClass> model, StateClass state){
 		// TODO
 		return null;
 	}

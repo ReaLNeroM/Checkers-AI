@@ -4,33 +4,33 @@ import java.lang.Math;
 import java.util.Queue;
 
 public class CheckersActions implements Actions <CheckersState, CheckersAction> {
-	private boolean verifyJump(Board b, Jump j, CheckersState s){
-		CoordinatePair initialPosition = j.getInitialPosition();
-		CoordinatePair targetPosition = j.getTargetPosition();
+	private boolean verifyJump(Board board, Jump jump, CheckersState state){
+		CoordinatePair initialPosition = jump.getInitialPosition();
+		CoordinatePair targetPosition = jump.getTargetPosition();
 
-		if(!b.withinBounds(initialPosition) || !b.withinBounds(targetPosition)) {
+		if(!board.withinBounds(initialPosition) || !board.withinBounds(targetPosition)) {
 			return false;
 		}
 
-		if(!b.hasPiece(initialPosition)){
+		if(!board.hasPiece(initialPosition)){
 			return false;
 		}
 
-		Piece jumpingPiece = b.getPiece(initialPosition);
-		if(!jumpingPiece.getColor().equals(s.getNextPlayerColor())){
+		Piece jumpingPiece = board.getPiece(initialPosition);
+		if(!jumpingPiece.getColor().equals(state.getNextPlayerColor())){
 			return false;
 		}
-		if(b.hasPiece(j.getTargetPosition())){
+		if(board.hasPiece(jump.getTargetPosition())){
 			return false;
 		}
 
-		if(j.isCapture()){
-			CoordinatePair capturePosition = j.getCapturePosition();
+		if(jump.isCapture()){
+			CoordinatePair capturePosition = jump.getCapturePosition();
 
-			if(!b.hasPiece(capturePosition)){
+			if(!board.hasPiece(capturePosition)){
 				return false;
 			}
-			if(b.getPiece(capturePosition).getColor().equals(s.getNextPlayerColor())){
+			if(board.getPiece(capturePosition).getColor().equals(state.getNextPlayerColor())){
 				return false;
 			}
 
@@ -48,7 +48,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 					return false;
 				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 2) {
 					return false;
-				}				
+				}
 			}
 		} else {
 			int deltaY = targetPosition.getRowNumber() - initialPosition.getRowNumber();
@@ -65,64 +65,64 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 					return false;
 				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 1) {
 					return false;
-				}				
+				}
 			}
 		}
 
 		return true;
 	}
 
-	private boolean isAtPromotionLocation(Board b, CoordinatePair c, Piece p){
-		if(c.getRowNumber() == 0){
+	private boolean isAtPromotionLocation(Board board, CoordinatePair coordinatePair){
+		if(coordinatePair.getRowNumber() == 0){
 			return true;
 		}
-		if(c.getRowNumber() + 1 == b.getSize()){
+		if(coordinatePair.getRowNumber() + 1 == board.getSize()){
 			return true;
 		}
 
 		return false;
 	}
 
-	private Board resultingBoardAfterJump(Board b, Jump j){
-		Board resultingBoard = new Board(b);
+	private Board resultingBoardAfterJump(Board board, Jump jump){
+		Board resultingBoard = new Board(board);
 
-		Piece jumpingPiece = resultingBoard.getPiece(j.getInitialPosition());
+		Piece jumpingPiece = resultingBoard.getPiece(jump.getInitialPosition());
 
-		resultingBoard.setPiece(j.getInitialPosition(), new Piece(new Color(0)));
-		if(j.isCapture()){
-			resultingBoard.setPiece(j.getCapturePosition(), new Piece(new Color(0)));
+		resultingBoard.setPiece(jump.getInitialPosition(), new Piece(new Color(0)));
+		if(jump.isCapture()){
+			resultingBoard.setPiece(jump.getCapturePosition(), new Piece(new Color(0)));
 		}
 
 		Piece newPiece = null;
 		newPiece = new Piece(new Color(jumpingPiece.getColor()),
 							 jumpingPiece.getIsKing() ||
-							 isAtPromotionLocation(b, j.getTargetPosition(), jumpingPiece));
-		resultingBoard.setPiece(j.getTargetPosition(), jumpingPiece);
+							 isAtPromotionLocation(board, jump.getTargetPosition()));
+		resultingBoard.setPiece(jump.getTargetPosition(), jumpingPiece);
 
 		return resultingBoard;
 	}
 
-	public Board resultingBoardAfterPartialAction(CheckersState s, CheckersAction partialAction){
-		Board currentBoard = s.getBoard();
+	public Board resultingBoardAfterPartialAction(CheckersState state, CheckersAction partialAction){
+		Board currentBoard = state.getBoard();
 
-		for(Jump j : partialAction.getJumps()){
-			if(!verifyJump(currentBoard, j, s)){
+		for(Jump jump : partialAction.getJumps()){
+			if(!verifyJump(currentBoard, jump, state)){
 				return null;
 			}
 
-			currentBoard = resultingBoardAfterJump(currentBoard, j);
+			currentBoard = resultingBoardAfterJump(currentBoard, jump);
 		}
 
 		return currentBoard;
 	}
 
-	public CheckersAction[] getCaptures(CheckersState s, CheckersAction partialAction){
+	public CheckersAction[] getCaptures(CheckersState state, CheckersAction partialAction){
 		if(partialAction.getNumberOfJumps() != partialAction.getNumberOfCaptures()) {
 			// Captures can't be done after a skip
 			return new CheckersAction[0];
 		}
 
-		Board currentBoard = resultingBoardAfterPartialAction(s, partialAction);
+		Board currentBoard = resultingBoardAfterPartialAction(state, partialAction);
 
 		ArrayList<CheckersAction> possibleCaptures = new ArrayList<CheckersAction>();
 		for(int i = 0; i < currentBoard.getSize(); i++){
@@ -140,7 +140,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 						Jump jumpAttempt = new Jump(
 							initialPosition, targetPosition, capturePosition
 						);
-						if(verifyJump(currentBoard, jumpAttempt, s)){
+						if(verifyJump(currentBoard, jumpAttempt, state)){
 							Jump[] resultingJumps = new Jump[partialAction.getNumberOfJumps() + 1];
 
 							Jump[] originalJumps = partialAction.getJumps();
@@ -159,13 +159,13 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		return possibleCaptures.toArray(new CheckersAction[possibleCaptures.size()]);
 	}
 
-	public CheckersAction[] getSkips(CheckersState s, CheckersAction partialAction){
+	public CheckersAction[] getSkips(CheckersState state, CheckersAction partialAction){
 		if(partialAction.getNumberOfJumps() != 0){
 			// Skips must be the first move
 			return new CheckersAction[0];
 		}
 
-		Board currentBoard = resultingBoardAfterPartialAction(s, partialAction);
+		Board currentBoard = resultingBoardAfterPartialAction(state, partialAction);
 
 		ArrayList<CheckersAction> possibleSkips = new ArrayList<CheckersAction>();
 		for(int i = 0; i < currentBoard.getSize(); i++){
@@ -178,7 +178,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 						);
 
 						Jump jumpAttempt = new Jump(initialPosition, targetPosition);
-						if(verifyJump(currentBoard, jumpAttempt, s)){
+						if(verifyJump(currentBoard, jumpAttempt, state)){
 							possibleSkips.add(new CheckersAction(new Jump[]{jumpAttempt}));
 						}
 					}
@@ -189,12 +189,12 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		return possibleSkips.toArray(new CheckersAction[possibleSkips.size()]);
 	}
 
-	public CheckersAction[] Actions(CheckersState s){
+	public CheckersAction[] Actions(CheckersState state){
 		// After 200 moves, declare this a loss for the next player.
-		if(s.getNumberOfMovesDone() >= 200) {
+		if(state.getNumberOfMovesDone() >= 200) {
 			return new CheckersAction[0];
 		}
-		
+
 		ArrayList<CheckersAction> validMoves = new ArrayList<CheckersAction>();
 
 		Queue<CheckersAction> partialMoveFrontier = new LinkedList<CheckersAction>();
@@ -214,16 +214,16 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 				validMoves.add(currentPartialAction);
 			}
 
-			CheckersAction[] captures = getCaptures(s, currentPartialAction);
-			CheckersAction[] skips = getSkips(s, currentPartialAction);
+			CheckersAction[] captures = getCaptures(state, currentPartialAction);
+			CheckersAction[] skips = getSkips(state, currentPartialAction);
 
-			for(CheckersAction a : captures){
-				partialMoveFrontier.add(a);
+			for(CheckersAction captureAction : captures){
+				partialMoveFrontier.add(captureAction);
 			}
 
 			if(captures.length == 0){
-				for(CheckersAction a : skips){
-					partialMoveFrontier.add(a);
+				for(CheckersAction skipAction : skips){
+					partialMoveFrontier.add(skipAction);
 				}
 			}
 		}

@@ -1,3 +1,3 @@
 public interface Cost <StateClass, ActionClass> {
-	int Cost(StateClass s, ActionClass a);
+	int Cost(StateClass state, ActionClass action);
 }

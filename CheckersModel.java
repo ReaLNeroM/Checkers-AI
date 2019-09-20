@@ -58,19 +58,19 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 		return null;
 	}
 
-	public CheckersAction[] getActions(CheckersState s){
-		return this.ActionsImplementation.Actions(s);
+	public CheckersAction[] getActions(CheckersState state){
+		return this.ActionsImplementation.Actions(state);
 	}
-	public CheckersState getResult(CheckersState s, CheckersAction a){
-		return this.ResultImplementation.Result(s, a);
+	public CheckersState getResult(CheckersState state, CheckersAction action){
+		return this.ResultImplementation.Result(state, action);
 	}
-	public int getCost(CheckersState s, CheckersAction a){
-		return this.CostImplementation.Cost(s, a);
+	public int getCost(CheckersState state, CheckersAction action){
+		return this.CostImplementation.Cost(state, action);
 	}
-	public int getUtility(CheckersState s){
-		return this.UtilityImplementation.Utility(s);
+	public int getUtility(CheckersState state){
+		return this.UtilityImplementation.Utility(state);
 	}
-	public int getHeuristic(CheckersState s){
-		return this.HeuristicImplementation.Heuristic(s);
+	public int getHeuristic(CheckersState state){
+		return this.HeuristicImplementation.Heuristic(state);
 	}
 }

@@ -2,61 +2,61 @@ public class Board {
 	private Piece[][] board;
 	private Integer size;
 
-	public Board(Piece[][] b){
-		size = b.length;
+	public Board(Piece[][] board){
+		size = board.length;
 		board = new Piece[size][size];
 
 		for(int i = 0; i < size; i++) {
 			for(int j = 0; j < size; j++) {
-				board[i][j] = b[i][j];
+				board[i][j] = board[i][j];
 			}
 		}
 	}
 
-	public Board(Board b){
-		this(b.getBoard());
+	public Board(Board board){
+		this(board.getBoard());
 	}
 
-	public boolean withinBounds(CoordinatePair c){
+	public boolean withinBounds(CoordinatePair coordinatePair){
 		if(
-			0 <= c.getRowNumber() && c.getRowNumber() < size &&
-			0 <= c.getColumnNumber() && c.getColumnNumber() < size
+			0 <= coordinatePair.getRowNumber() && coordinatePair.getRowNumber() < size &&
+			0 <= coordinatePair.getColumnNumber() && coordinatePair.getColumnNumber() < size
 		){
 			return true;
 		}
 		return false;
 	}
 
-	public boolean hasPiece(CoordinatePair c) {
-		if(!withinBounds(c)){
+	public boolean hasPiece(CoordinatePair coordinatePair) {
+		if(!withinBounds(coordinatePair)){
 			return false;
 		}
 
-		return (board[c.getRowNumber()][c.getColumnNumber()].getColor().toString() != "-");
+		return (board[coordinatePair.getRowNumber()][coordinatePair.getColumnNumber()].getColor().toString() != "-");
 	}
 
 	public Piece[][] getBoard(){
 		return board;
 	}
 
-	public Piece getPiece(CoordinatePair c){
-		if(!withinBounds(c)){
+	public Piece getPiece(CoordinatePair coordinatePair){
+		if(!withinBounds(coordinatePair)){
 			return null;
 		}
 
-		return board[c.getRowNumber()][c.getColumnNumber()];
+		return board[coordinatePair.getRowNumber()][coordinatePair.getColumnNumber()];
 	}
 
 	public Integer getSize(){
 		return size;
 	}
 
-	public void setPiece(CoordinatePair c, Piece p){
-		if(!withinBounds(c)){
+	public void setPiece(CoordinatePair coordinatePair, Piece piece){
+		if(!withinBounds(coordinatePair)){
 			return;
 		}
 
-		board[c.getRowNumber()][c.getColumnNumber()] = p;
+		board[coordinatePair.getRowNumber()][coordinatePair.getColumnNumber()] = piece;
 	}
 
 	public String toString(){
