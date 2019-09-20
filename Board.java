@@ -32,7 +32,7 @@ public class Board {
 			return false;
 		}
 
-		return (board[coordinatePair.getRowNumber()][coordinatePair.getColumnNumber()].getPlayer().toString() != "-");
+		return (board[coordinatePair.getRowNumber()][coordinatePair.getColumnNumber()].getColor().toString() != "-");
 	}
 
 	public Piece[][] getBoard(){
@@ -65,7 +65,7 @@ public class Board {
 		for(Piece[] rowOfPieces : board){
 			boardString.append('\t');
 			for(Piece currentPiece : rowOfPieces){
-				boardString.append(currentPiece.getPlayer());
+				boardString.append(currentPiece.toString());
 			}
 			boardString.append('\n');
 		}

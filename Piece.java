@@ -1,19 +1,19 @@
 public class Piece {
-	private Player Player;
+	private Color color;
 	private boolean isKing;
 
-	public Piece(Player Player) {
-		this.Player = Player;
+	public Piece(Color color) {
+		this.color = color;
 		isKing = false;
 	}
 
-	public Piece(Player Player, boolean king) {
-		this.Player = Player;
-		isKing = king;
+	public Piece(Color color, boolean isKing) {
+		this.color = color;
+		this.isKing = isKing;
 	}
 
-	public Player getPlayer() {
-		return Player;
+	public Color getColor() {
+		return color;
 	}
 
 	public boolean getIsKing() {
@@ -26,6 +26,16 @@ public class Piece {
 
 	@Override
 	public String toString() {
-		return "Piece [Player=" + Player.toString() + ", isKing?=" + isKing + "]";
+		if(color.toInteger() == 1 && !isKing){
+			return "w";
+		} else if(color.toInteger() == 1 && isKing){
+			return "W";
+		} else if(color.toInteger() == 2 && !isKing){
+			return "b";
+		} else if(color.toInteger() == 2 && isKing){
+			return "B";
+		}
+
+		return "-";
 	}
 }

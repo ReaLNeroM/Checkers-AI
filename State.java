@@ -1,4 +1,4 @@
 public interface State {
-	public Player getNextPlayer();
+	public Color getNextPlayerColor();
 	public String toString();
 }

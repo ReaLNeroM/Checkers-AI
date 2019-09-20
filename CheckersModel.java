@@ -18,7 +18,7 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 
 		for(int i = 0; i < boardSize; i++){
 			for(int j = 0; j < boardSize; j++){
-				boardPieces[i][j] = new Piece(new Player(0));
+				boardPieces[i][j] = new Piece(new Color(0));
 			}
 		}
 
@@ -26,11 +26,11 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 			for(int j = 0; j < boardSize; j++) {
 				if(i%2==0) {
 					if(j%2!=0) {
-						boardPieces[i][j] = new Piece(new Player(2));
+						boardPieces[i][j] = new Piece(new Color(2));
 					}
 				}else {
 					if(j%2==0) {
-						boardPieces[i][j] = new Piece(new Player(2));
+						boardPieces[i][j] = new Piece(new Color(2));
 					}
 				}
 			}
@@ -39,20 +39,20 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 			for(int j = 0; j < boardSize; j++) {
 				if(i%2!=0) {
 					if(j%2==0) {
-						boardPieces[i][j] = new Piece(new Player(1));
+						boardPieces[i][j] = new Piece(new Color(1));
 					}
 				}else {
 					if(j%2!=0) {
-						boardPieces[i][j] = new Piece(new Player(1));
+						boardPieces[i][j] = new Piece(new Color(1));
 					}
 				}
 			}
 		}//white side
 
 		if(boardSize == 4){
-			return new CheckersState(new Board(boardPieces), new Player(1));
+			return new CheckersState(new Board(boardPieces), new Color(1));
 		} else if(boardSize == 8){
-			return new CheckersState(new Board(boardPieces), new Player(1));
+			return new CheckersState(new Board(boardPieces), new Color(1));
 		}
 
 		return null;

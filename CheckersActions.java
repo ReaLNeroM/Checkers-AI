@@ -17,7 +17,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		}
 
 		Piece jumpingPiece = board.getPiece(initialPosition);
-		if(!jumpingPiece.getPlayer().equals(state.getNextPlayer())){
+		if(!jumpingPiece.getColor().equals(state.getNextPlayerColor())){
 			return false;
 		}
 		if(board.hasPiece(jump.getTargetPosition())){
@@ -30,7 +30,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			if(!board.hasPiece(capturePosition)){
 				return false;
 			}
-			if(board.getPiece(capturePosition).getPlayer().equals(state.getNextPlayer())){
+			if(board.getPiece(capturePosition).getColor().equals(state.getNextPlayerColor())){
 				return false;
 			}
 
@@ -44,9 +44,9 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 			// Non-king pieces can only capture forwards
 			if(!jumpingPiece.getIsKing()) {
-				if(jumpingPiece.getPlayer().toInteger() == 1 && deltaY != -2){
+				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -2){
 					return false;
-				} else if(jumpingPiece.getPlayer().toInteger() == 2 && deltaY != 2) {
+				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 2) {
 					return false;
 				}
 			}
@@ -61,9 +61,9 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 			// Non-king pieces can only skip forwards
 			if(!jumpingPiece.getIsKing()) {
-				if(jumpingPiece.getPlayer().toInteger() == 1 && deltaY != -1){
+				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -1){
 					return false;
-				} else if(jumpingPiece.getPlayer().toInteger() == 2 && deltaY != 1) {
+				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 1) {
 					return false;
 				}
 			}
@@ -88,16 +88,16 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 		Piece jumpingPiece = resultingBoard.getPiece(jump.getInitialPosition());
 
-		resultingBoard.setPiece(jump.getInitialPosition(), new Piece(new Player(0)));
+		resultingBoard.setPiece(jump.getInitialPosition(), new Piece(new Color(0)));
 		if(jump.isCapture()){
-			resultingBoard.setPiece(jump.getCapturePosition(), new Piece(new Player(0)));
+			resultingBoard.setPiece(jump.getCapturePosition(), new Piece(new Color(0)));
 		}
 
 		Piece newPiece = null;
-		newPiece = new Piece(new Player(jumpingPiece.getPlayer()),
+		newPiece = new Piece(new Color(jumpingPiece.getColor()),
 							 jumpingPiece.getIsKing() ||
 							 isAtPromotionLocation(board, jump.getTargetPosition()));
-		resultingBoard.setPiece(jump.getTargetPosition(), jumpingPiece);
+		resultingBoard.setPiece(jump.getTargetPosition(), newPiece);
 
 		return resultingBoard;
 	}

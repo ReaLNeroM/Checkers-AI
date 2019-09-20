@@ -7,9 +7,9 @@ public interface Model <StateClass, ActionClass> {
 	//	Utility UtilityImplementation;
 	//	Heuristic HeuristicImplementation;
 
-	public ActionClass[] getActions(StateClass state);
-	public StateClass getResult(StateClass state, ActionClass action);
-	public int getCost(StateClass state, ActionClass action);
-	public int getHeuristic(StateClass state);
-	public int getUtility(StateClass state);
+	public ActionClass[] getActions(StateClass s);
+	public StateClass getResult(StateClass s, ActionClass a);
+	public int getCost(StateClass s, ActionClass a);
+	public int getHeuristic(StateClass s);
+	public int getUtility(StateClass s);
 }
