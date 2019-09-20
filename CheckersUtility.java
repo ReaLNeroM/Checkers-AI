@@ -5,10 +5,10 @@ public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 		CheckersAction[] possibleActions = checkersActionsImplementation.Actions(state);
 
 		if(possibleActions.length == 0){
-			if(state.getNextPlayerColor().toInteger() == 2){
+			if(state.getNextPlayer().toInteger() == 2){
 				return 1;
 			}
-			if(state.getNextPlayerColor().toInteger() == 1){
+			if(state.getNextPlayer().toInteger() == 1){
 				return -1;
 			}
 		}

@@ -1,18 +1,18 @@
 
 public class CheckersState implements State {
 	Board board;
-	Color color;
+	Player nextPlayer;
 	Integer numberOfTurns;
 
-	public CheckersState(Board board, Color color){
+	public CheckersState(Board board, Player nextPlayer){
 		this.board = board;
-		this.color = color;
+		this.nextPlayer = nextPlayer;
 		this.numberOfTurns = 0;
 	}
 
-	public CheckersState(Board board, Color color, Integer numberOfTurns){
+	public CheckersState(Board board, Player nextPlayer, Integer numberOfTurns){
 		this.board = board;
-		this.color = color;
+		this.nextPlayer = nextPlayer;
 		this.numberOfTurns = numberOfTurns;
 	}
 
@@ -20,8 +20,8 @@ public class CheckersState implements State {
 		return board;
 	}
 
-	public Color getNextPlayerColor(){
-		return color;
+	public Player getNextPlayer(){
+		return nextPlayer;
 	}
 
 	public Integer getNumberOfMovesDone(){
@@ -29,8 +29,8 @@ public class CheckersState implements State {
 	}
 
 	public String toString(){
-		return "[Board=" + board.toString() + "," +
-			   " color=" + color.toString() + "," +
-			   " numberOfTurns=" + numberOfTurns.toString() + "]";
+		return "[ nextPlayer=" + nextPlayer.toString() + "," +
+			    " numberOfTurns=" + numberOfTurns.toString() + "," +
+			    " board=" + board.toString() + "]";
 	}
 }
