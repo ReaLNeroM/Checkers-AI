@@ -26,13 +26,13 @@ public class Piece {
 
 	@Override
 	public String toString() {
-		if(color.toInteger() == 1 && !isKing){
+		if(owner.toInteger() == 1 && !isKing){
 			return "w";
-		} else if(color.toInteger() == 1 && isKing){
+		} else if(owner.toInteger() == 1 && isKing){
 			return "W";
-		} else if(color.toInteger() == 2 && !isKing){
+		} else if(owner.toInteger() == 2 && !isKing){
 			return "b";
-		} else if(color.toInteger() == 2 && isKing){
+		} else if(owner.toInteger() == 2 && isKing){
 			return "B";
 		}
 

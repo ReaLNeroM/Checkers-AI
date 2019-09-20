@@ -36,14 +36,11 @@ public class CheckersAction implements Action {
 			Jump nextJump = null;
 			if(isCapture){
 				intermediateJumps.add(new Jump(
-					jumpCoordinates.get(i),
-					jumpCoordinates.get(i + 1),
-					captureCoordinates
+					jumpCoordinates.get(i), jumpCoordinates.get(i + 1), captureCoordinates
 				));
 			} else {
 				intermediateJumps.add(new Jump(
-					jumpCoordinates.get(i),
-					jumpCoordinates.get(i + 1)
+					jumpCoordinates.get(i), jumpCoordinates.get(i + 1)
 				));
 			}
 		}

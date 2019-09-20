@@ -5,12 +5,12 @@ public class CheckersResult implements Result <CheckersState, CheckersAction> {
 		checkersActionsImplementation = new CheckersActions();
 	}
 
-	public CheckersState Result(CheckersState s, CheckersAction a){
-		CheckersAction[] validActions = checkersActionsImplementation.Actions(s);
+	public CheckersState Result(CheckersState state, CheckersAction action){
+		CheckersAction[] validActions = checkersActionsImplementation.Actions(state);
 
 		boolean isValid = false;
 		for(CheckersAction validAction : validActions){
-			if(a.equals(validAction)){
+			if(action.equals(validAction)){
 				isValid = true;
 			}
 		}
@@ -19,9 +19,11 @@ public class CheckersResult implements Result <CheckersState, CheckersAction> {
 			return null;
 		}
 
-		Board resultingBoard = checkersActionsImplementation.resultingBoardAfterPartialAction(s, a);
-		Integer numberOfMoves = s.getNumberOfMovesDone() + 1;
-		Color nextPlayer = s.getNextPlayerColor().getOppositeColor();
+		Board resultingBoard = checkersActionsImplementation.resultingBoardAfterPartialAction(
+			state, action
+		);
+		Integer numberOfMoves = state.getNumberOfMovesDone() + 1;
+		Player nextPlayer = state.getNextPlayer().getOppositePlayer();
 
 		CheckersState resultingState = new CheckersState(resultingBoard, nextPlayer, numberOfMoves);
 		return resultingState;

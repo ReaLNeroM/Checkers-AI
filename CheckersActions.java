@@ -17,7 +17,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 		}
 
 		Piece jumpingPiece = board.getPiece(initialPosition);
-		if(!jumpingPiece.getColor().equals(state.getNextPlayerColor())){
+		if(!jumpingPiece.getOwner().equals(state.getNextPlayer())){
 			return false;
 		}
 		if(board.hasPiece(jump.getTargetPosition())){
@@ -30,7 +30,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 			if(!board.hasPiece(capturePosition)){
 				return false;
 			}
-			if(board.getPiece(capturePosition).getColor().equals(state.getNextPlayerColor())){
+			if(board.getPiece(capturePosition).getOwner().equals(state.getNextPlayer())){
 				return false;
 			}
 
@@ -44,9 +44,9 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 			// Non-king pieces can only capture forwards
 			if(!jumpingPiece.getIsKing()) {
-				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -2){
+				if(jumpingPiece.getOwner().toInteger() == 1 && deltaY != -2){
 					return false;
-				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 2) {
+				} else if(jumpingPiece.getOwner().toInteger() == 2 && deltaY != 2) {
 					return false;
 				}
 			}
@@ -61,9 +61,9 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 			// Non-king pieces can only skip forwards
 			if(!jumpingPiece.getIsKing()) {
-				if(jumpingPiece.getColor().toInteger() == 1 && deltaY != -1){
+				if(jumpingPiece.getOwner().toInteger() == 1 && deltaY != -1){
 					return false;
-				} else if(jumpingPiece.getColor().toInteger() == 2 && deltaY != 1) {
+				} else if(jumpingPiece.getOwner().toInteger() == 2 && deltaY != 1) {
 					return false;
 				}
 			}
@@ -88,15 +88,15 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
 		Piece jumpingPiece = resultingBoard.getPiece(jump.getInitialPosition());
 
-		resultingBoard.setPiece(jump.getInitialPosition(), new Piece(new Color(0)));
+		resultingBoard.setPiece(jump.getInitialPosition(), new Piece(new Player(0)));
 		if(jump.isCapture()){
-			resultingBoard.setPiece(jump.getCapturePosition(), new Piece(new Color(0)));
+			resultingBoard.setPiece(jump.getCapturePosition(), new Piece(new Player(0)));
 		}
 
 		// note the tricky promotion logic here: a black piece can exist on the first row without
 		// getting promoted. It's once a piece jumps that the promotion logic triggers.
 		Piece newPiece = null;
-		newPiece = new Piece(new Color(jumpingPiece.getColor()),
+		newPiece = new Piece(new Player(jumpingPiece.getOwner()),
 							 jumpingPiece.getIsKing() ||
 							 isAtPromotionLocation(board, jump.getTargetPosition()));
 		resultingBoard.setPiece(jump.getTargetPosition(), newPiece);
