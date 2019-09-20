@@ -73,4 +73,10 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 	public int getHeuristic(CheckersState state){
 		return this.HeuristicImplementation.Heuristic(state);
 	}
+
+	@Override
+	public boolean getIsTerminal(CheckersState s) {
+		
+		return UtilityImplementation.isTerminal(s);
+	}
 }

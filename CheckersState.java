@@ -1,18 +1,18 @@
 public class CheckersState implements State {
-	Board board;
-	Player currentPlayer;
-	Integer numberOfTurns;
+	private Board board;
+	private Player currentPlayer;
+	private Integer numberOfMoves;
 
 	public CheckersState(Board board, Player currentPlayer){
 		this.board = board;
 		this.currentPlayer = currentPlayer;
-		this.numberOfTurns = 0;
+		this.numberOfMoves = 0;
 	}
 
 	public CheckersState(Board board, Player currentPlayer, Integer numberOfTurns){
 		this.board = board;
 		this.currentPlayer = currentPlayer;
-		this.numberOfTurns = numberOfTurns;
+		this.numberOfMoves = numberOfTurns;
 	}
 
 	public Board getBoard(){
@@ -24,12 +24,12 @@ public class CheckersState implements State {
 	}
 
 	public Integer getNumberOfMovesDone(){
-		return numberOfTurns;
+		return numberOfMoves;
 	}
 
 	public String toString(){
 		return "[Board=" + board.toString() + "," +
 			   " currentPlayer=" + currentPlayer.toString() + "," +
-			   " numberOfTurns=" + numberOfTurns.toString() + "]";
+			   " numberOfTurns=" + numberOfMoves.toString() + "]";
 	}
 }

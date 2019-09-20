@@ -12,4 +12,5 @@ public interface Model <StateClass, ActionClass> {
 	public int getCost(StateClass s, ActionClass a);
 	public int getHeuristic(StateClass s);
 	public int getUtility(StateClass s);
+	public boolean getIsTerminal(StateClass s);
 }

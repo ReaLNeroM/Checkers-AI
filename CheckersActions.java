@@ -193,11 +193,6 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 	}
 
 	public CheckersAction[] Actions(CheckersState state){
-		// After 200 moves, declare this a loss for the next player.
-		if(state.getNumberOfMovesDone() >= 200) {
-			return new CheckersAction[0];
-		}
-
 		ArrayList<CheckersAction> validMoves = new ArrayList<CheckersAction>();
 
 		Queue<CheckersAction> partialMoveFrontier = new LinkedList<CheckersAction>();
