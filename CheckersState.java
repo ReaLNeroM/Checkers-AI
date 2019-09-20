@@ -1,3 +1,4 @@
+
 public class CheckersState implements State {
 	Board board;
 	Color color;
