@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
 
-public class AI <StateClass, ActionClass> {
+public class AI <StateClass extends State, ActionClass extends Action> {
 	private Random randomGenerator;
 
 	public AI(){

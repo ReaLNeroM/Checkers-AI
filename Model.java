@@ -1,4 +1,4 @@
-public interface Model <StateClass, ActionClass> {
+public interface Model <StateClass extends State, ActionClass extends Action> {
 
 	//TODO: to be deleted
 	//	Actions ActionsImplementation;
