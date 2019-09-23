@@ -24,7 +24,7 @@ public class GameRunner {
 			if (nextAction == null) {
 				break;
 			}
-			
+
 			resultingState = model.getResult(currentState, nextAction);
 			if(resultingState != null) {
 				System.out.println(resultingState.toString());
@@ -32,7 +32,7 @@ public class GameRunner {
 			} else {
 				break;
 			}
-			
+
 			currentState = resultingState;
 			isFirstPlayerMove = !isFirstPlayerMove;
 		}while(resultingState != null);

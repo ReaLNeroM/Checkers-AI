@@ -58,12 +58,35 @@ public class Board {
 	public String toString(){
 		StringBuilder boardString = new StringBuilder("[\n");
 
-		for(Piece[] rowOfPieces : board){
+		boardString.append("\t ");
+		for(int i = 0; i < size; i++){
+			boardString.append(' ' + Character.toString((char) ('A' + i)));
+		}
+		boardString.append('\n');
+
+		boardString.append("\t ");
+		for(int j = 0; j < size; j++){
+			boardString.append("+—");
+		}
+		boardString.append("+\n");
+
+		for(int i = 0; i < size; i++){
+			Piece[] rowOfPieces = board[i];
+
 			boardString.append('\t');
+			boardString.append(Integer.toString(i + 1));
+			boardString.append('|');
 			for(Piece currentPiece : rowOfPieces){
 				boardString.append(currentPiece.toString());
+				boardString.append('|');
 			}
 			boardString.append('\n');
+
+			boardString.append("\t ");
+			for(int j = 0; j < size; j++){
+				boardString.append("+—");
+			}
+			boardString.append("+\n");
 		}
 
 		boardString.append("]");
