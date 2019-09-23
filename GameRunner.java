@@ -8,11 +8,10 @@ public class GameRunner {
 		String firstPlayer = scanner.nextLine();
 		System.out.println("Second Player: 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta");
 		String secondPlayer = scanner.nextLine();
-		
+
 		CheckersModel model = new CheckersModel();
 
 		CheckersState currentState = model.getInitialState(4);
-
 		System.out.println(currentState.toString());
 
 		AI<CheckersState, CheckersAction> aiInstance = new AI<CheckersState, CheckersAction>();
@@ -28,14 +27,15 @@ public class GameRunner {
 			}
 			resultingState = model.getResult(currentState, nextAction);
 			if(resultingState != null) {
+
 				System.out.println(resultingState.toString());
+				currentState = resultingState;
 			} else {
 				break;
 			}
 			currentState = resultingState;
 			isFirstPlayerMove = !isFirstPlayerMove;
 		}while(resultingState != null);
-
 
 		if(model.getUtility(currentState) == 1) {
 			System.out.println("Win for the first player!");
