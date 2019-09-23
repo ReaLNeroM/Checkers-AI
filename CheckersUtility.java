@@ -1,6 +1,7 @@
 public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 	private CheckersActions checkersActionsImplementation = new CheckersActions();
 
+	private int maxSearchDepth = 8;
 	public int Utility(CheckersState state){
 		CheckersAction[] possibleActions = checkersActionsImplementation.Actions(state);
 
@@ -18,7 +19,7 @@ public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 
 	@Override
 	public boolean isTerminal(CheckersState state) {
-		if(state.getNumberOfMovesDone() >= 24) {
+		if(state.getNumberOfMovesDone() >= maxSearchDepth) {
 			return true;
 		}
 		CheckersAction[] possibleActions = checkersActionsImplementation.Actions(state);
@@ -26,5 +27,9 @@ public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 			return true;
 		}
 		return false;
+	}
+	
+	public int getMaxDepth() {
+		return maxSearchDepth;
 	}
 }
