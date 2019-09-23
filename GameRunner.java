@@ -4,9 +4,9 @@ public class GameRunner {
 	public static void main(String args[]) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("enter a game to simulate: ");
-		System.out.println("First Player: 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta");
+		System.out.println("First Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta");
 		String firstPlayer = scanner.nextLine();
-		System.out.println("Second Player: 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta");
+		System.out.println("Second Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta");
 		String secondPlayer = scanner.nextLine();
 
 		CheckersModel model = new CheckersModel();
@@ -21,7 +21,7 @@ public class GameRunner {
 		boolean isFirstPlayerMove = true;
 		do {
 			if(isFirstPlayerMove) {
-				nextAction = makeMove(model, currentState, aiInstance, firstPlayer);				
+				nextAction = makeMove(model, currentState, aiInstance, firstPlayer);
 			}else {
 				nextAction = makeMove(model, currentState, aiInstance, secondPlayer);
 			}
@@ -45,22 +45,43 @@ public class GameRunner {
 			System.out.println("Tie!");
 		}
 	}
-	
-	public static CheckersAction makeMove(CheckersModel model, CheckersState state, AI<CheckersState, CheckersAction> ai, String AIType) {
+
+	private static CheckersAction queryUser(CheckersModel model, CheckersState state){
+		CheckersAction userAction = null;
+
+		while (userAction == null){
+			System.out.println("Enter a move: ");
+			Scanner userMoveScanner = new Scanner(System.in);
+			String moveString = userMoveScanner.nextLine();
+			userAction = new CheckersAction(moveString);
+
+			if(userAction == null){
+				System.out.println("Input is not in valid checkers move notation.");
+			} else if(model.getResult(state, userAction) == null){
+				userAction = null;
+				System.out.println("This move is not a valid checkers move for the current state. Is there a capture you missed?");
+			}
+		}
+
+		return userAction;
+	}
+
+	public static CheckersAction makeMove(CheckersModel model, CheckersState state,
+										  AI<CheckersState, CheckersAction> ai, String AIType) {
 		CheckersAction action = null;
 		switch(Integer.valueOf(AIType)){
+			case 0:
+				action = queryUser(model, state);
+				break;
 			case 1:
 				action = ai.randomPlay(model, state);
 				break;
-				
 			case 2:
 				action = ai.miniMax(model, state);
 				break;
-				
 			case 3:
 				action = ai.miniMax_a_b(model, state);
 				break;
-				
 		}
 		return action;
 	}

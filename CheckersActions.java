@@ -205,10 +205,6 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 	}
 
 	public CheckersAction[] Actions(CheckersState state){
-		if(state.getNumberOfMovesDone() >= 20){
-			return new CheckersAction[0];
-		}
-
 		ArrayList<CheckersAction> validMoves = new ArrayList<CheckersAction>();
 		Queue<CheckersAction> partialMoveFrontier = new LinkedList<CheckersAction>();
 		partialMoveFrontier.add(new CheckersAction(new Jump[0]));
