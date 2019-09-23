@@ -5,6 +5,56 @@ import java.util.Random;
 public class AI <StateClass extends State, ActionClass extends Action> {
 	private Random randomGenerator;
 
+	private class UtilityValue implements Comparable<UtilityValue> {
+		private Double utilityAchieved;
+		private Integer cost;
+
+		public UtilityValue(Double utilityAchieved, Integer cost){
+			this.utilityAchieved = utilityAchieved;
+			this.cost = cost;
+		}
+
+		public UtilityValue getOpponentUtilityValue(Integer actionCost){
+			return new UtilityValue(-utilityAchieved, cost + actionCost);
+		}
+
+		public Double getUtilityAchieved(){
+			return utilityAchieved;
+		}
+
+		public Integer getCost(){
+			return cost;
+		}
+
+		public int compareTo(UtilityValue comparisonUtilityValue){
+			// the higher the utilityAchieved, the better the UtilityValue.
+			if(utilityAchieved < comparisonUtilityValue.getUtilityAchieved()){
+				return -1;
+			} else if(utilityAchieved > comparisonUtilityValue.getUtilityAchieved()){
+				return 1;
+			}
+
+			// Since the utilityAchieved in both are equal, we prefer the one with the lower cost.
+			if(cost < comparisonUtilityValue.getCost()){
+				return 1;
+			} else if(cost > comparisonUtilityValue.getCost()){
+				return -1;
+			}
+
+			return 0;
+		}
+
+		public String toString(){
+			return "[ utilityAchieved: " + utilityAchieved.toString() +
+				   ", cost: " + cost.toString() + " ]";
+		}
+	}
+
+	private UtilityValue worstUtilityForMaximizingPlayer = new UtilityValue(Double.NEGATIVE_INFINITY, 0);
+	private UtilityValue worstUtilityForMinimizingPlayer = new UtilityValue(Double.POSITIVE_INFINITY, 0);
+	private UtilityValue tieUtilityValue = new UtilityValue(0.0, 0);
+	private UtilityValue lossUtilityValue = new UtilityValue(-1.0, 0);
+
 	public AI(){
 		randomGenerator = new Random();
 	}
@@ -17,7 +67,8 @@ public class AI <StateClass extends State, ActionClass extends Action> {
 		}
 
 		int randomIndex = randomGenerator.nextInt(validActions.length);
-		System.out.println("computer has randomly played something");
+		System.err.println("Computer has issued the random move: " +
+						   validActions[randomIndex].toString());
 		return validActions[randomIndex];
 	}
 
@@ -27,173 +78,156 @@ public class AI <StateClass extends State, ActionClass extends Action> {
 		}
 
 		ActionClass[] validActions = model.getActions(state);
-		Pair<Double, Integer> bestUtility = new Pair<Double, Integer>(Double.NEGATIVE_INFINITY,
-																	  Integer.MAX_VALUE);
+		UtilityValue bestUtility = worstUtilityForMinimizingPlayer;
 
 		ActionClass bestMove = null;
 		for(int i = 0; i < validActions.length; i++) {
 			StateClass currentState = model.getResult(state, validActions[i]);
-			Pair<Double, Integer> opponentUtility = miniMaxHelp(model, currentState);
-			Pair<Double, Integer> resultingUtilityOfAction = new Pair<Double, Integer>(
-				-opponentUtility.getFirst(),
-				opponentUtility.getSecond() + model.getCost(state, validActions[i])
-			);
-			//evaluates the result based on bestUtility and cost
-			//prioritizing bestUtility primarily and cost secondarily
-			if(utilCompare(resultingUtilityOfAction, bestUtility)) {
+			UtilityValue opponentUtility = miniMaxHelp(model, currentState);
+			UtilityValue resultingUtilityOfAction = opponentUtility.getOpponentUtilityValue(model.getCost(state, validActions[i]));
+
+			if(bestUtility.compareTo(resultingUtilityOfAction) < 0) {
 				bestUtility = resultingUtilityOfAction;
 				bestMove = validActions[i];
 			}
 		}
-		System.out.println("computer has played based on miniMax");
+
+		if(bestMove != null){
+			System.err.println("Using Minimax, the computer has issued the following move: " +
+							   bestMove.toString());
+		}
 		return bestMove;
 	}
 
-	private Pair<Double, Integer> miniMaxHelp(Model<StateClass, ActionClass> model,
+	private UtilityValue miniMaxHelp(Model<StateClass, ActionClass> model,
 											  StateClass state) {
 		//check if is terminal state
 		if(model.getIsTerminal(state)) {
 			if(model.getUtility(state) == 0) {
-				return new Pair<Double, Integer>(0.0, 0);
+				return tieUtilityValue;
 			} else {
-				return new Pair<Double, Integer>(-1.0, 0);
+				return lossUtilityValue;
 			}
 		}
 
 		ActionClass[] validActions = model.getActions(state);
-		Pair<Double, Integer> bestUtility = new Pair<Double, Integer>(Double.NEGATIVE_INFINITY,
-																	  Integer.MAX_VALUE);
+		UtilityValue bestUtility = worstUtilityForMaximizingPlayer;
 
 		for(int i = 0; i < validActions.length; i++) {
 			StateClass currentState = model.getResult(state, validActions[i]);
 
-			Pair<Double, Integer> opponentUtility = miniMaxHelp(model, currentState);
-			Pair<Double, Integer> resultingUtilityOfAction = new Pair<Double, Integer>(
-				-opponentUtility.getFirst(),
-				opponentUtility.getSecond() + model.getCost(state, validActions[i])
-			);
-			//evaluates the result based on bestUtility and cost
-			//prioritizing bestUtility primarily and cost secondarily
-			if(utilCompare(resultingUtilityOfAction, bestUtility)) {
+			UtilityValue opponentUtility = miniMaxHelp(model, currentState);
+			UtilityValue resultingUtilityOfAction = opponentUtility.getOpponentUtilityValue(model.getCost(state, validActions[i]));
+
+			if(bestUtility.compareTo(resultingUtilityOfAction) < 0) {
 				bestUtility = resultingUtilityOfAction;
 			}
 		}
 		return bestUtility;
 	}
 
-	/**
-	 *
-	 * @param firstUtil
-	 * @param secondUtil
-	 * @return true if the first is better than second
-	 */
-	private boolean utilCompare(Pair<Double, Integer> firstUtil, Pair<Double, Integer> secondUtil) {
-		if(firstUtil.getFirst()>secondUtil.getFirst()) {
-			return true;
-		}
-		if(
-			firstUtil.getFirst() == secondUtil.getFirst() &&
-			firstUtil.getSecond() < secondUtil.getSecond()
-		) {
-			return true;
-		}
-		return false;
-	}
-
 	public ActionClass miniMax_a_b(Model<StateClass, ActionClass> model, StateClass state){
-		boolean isMaxPlayer = ((CheckersState)state).getNextPlayer().toInteger()==1;		
-		if(isMaxPlayer) {
-			System.out.println("is Max Player");
-		}else {
-			System.out.println("is Min Player");
+		if(model.getIsTerminal(state)) {
+			return null;
 		}
+
+		boolean isMaxPlayer = state.getNextPlayer().toInteger()==1;
 		ActionClass[] validActions = model.getActions(state);
-		Double score;
-		ActionClass bestMove = null;
+		UtilityValue bestUtility = null;
 		if(isMaxPlayer) {
-			score = Double.MIN_VALUE;
-		}else {
-			score = Double.MAX_VALUE;
+			System.err.println("A-B Minimax is computing moves for the Maximizing player.");
+			bestUtility = worstUtilityForMaximizingPlayer;
+		} else {
+			System.err.println("A-B Minimax is computing moves for the Minimizing player.");
+			bestUtility = worstUtilityForMinimizingPlayer;
 		}
+
+		ActionClass bestMove = null;
 		for(int i = 0; i < validActions.length; i++) {
 			StateClass currentState = model.getResult(state, validActions[i]);
 
-			Double opponentScore = miniMaxAlphaBetaHelp(model, currentState, Double.MIN_VALUE, Double.MAX_VALUE, !isMaxPlayer);
-			System.out.println("opponentUtil is: " + opponentScore);
-			//evaluates the result based on score and cost
-			//prioritizing score primarily and cost secondarily
-			if(isMaxPlayer) {				
-				if(opponentScore < score) {
-					score = opponentScore;
-					bestMove = validActions[i];
-				}
-			}else {
-				if(score > opponentScore) {
-					score = opponentScore;
-					bestMove = validActions[i];
-				}
+			UtilityValue opponentUtility = miniMaxAlphaBetaHelp(
+				model, currentState,
+				worstUtilityForMaximizingPlayer, worstUtilityForMinimizingPlayer, !isMaxPlayer
+			);
+
+			if(isMaxPlayer && bestUtility.compareTo(opponentUtility) < 0) {
+				bestUtility = opponentUtility;
+				bestMove = validActions[i];
+			} else if (!isMaxPlayer && bestUtility.compareTo(opponentUtility) > 0){
+				bestUtility = opponentUtility;
+				bestMove = validActions[i];
 			}
-			System.out.println("score is currently: " + score + "(exploring " + i + "th option");
 		}
-		System.out.println("current player: " + ((CheckersState)state).getNextPlayer());
-		if(bestMove != null) {
-			System.out.println("util: " + score + ", depth: " + score);			
+
+		if(bestMove != null){
+			System.err.println("A-B Minimax for player " + state.getNextPlayer().toString() +
+							   " has issued the following move: " + bestMove.toString());
 		}
 		return bestMove;
 	}
-	
-	private Double miniMaxAlphaBetaHelp(Model<StateClass, ActionClass> model, StateClass state, Double alpha, Double beta, boolean isMaxPlayer){
-		System.out.println("a: " + alpha + ", b: " + beta);
+
+	private UtilityValue miniMaxAlphaBetaHelp(Model<StateClass, ActionClass> model,
+											  StateClass state, UtilityValue alpha,
+											  UtilityValue beta, boolean isMaxPlayer){
 		if(model.getIsTerminal(state)) {
 			Double output = Double.valueOf(model.getUtility(state));
-			System.out.println("found a terminal state of util: " + Double.valueOf(model.getUtility(state)));
-			return output;
+			return new UtilityValue(output, 0);
 		}
-		Double score;
+
+		UtilityValue bestUtility = null;
+
 		if(isMaxPlayer) {
-			score = Double.MIN_VALUE;
+			bestUtility = worstUtilityForMaximizingPlayer;
 			ActionClass[] validActions = model.getActions(state);
 			for(ActionClass currentAction : validActions) {
 				//score is the max of the ab of the child
 				//score = max(score, ab(child, a, b, !isMaxPlayer))
-				Double tempScore = miniMaxAlphaBetaHelp(model, model.getResult(state, currentAction), alpha, beta, !isMaxPlayer);
-				if(score > tempScore) {
-					//do nothing, score is still larger
-				}else {
-					score = tempScore;
+				UtilityValue opponentUtility = miniMaxAlphaBetaHelp(model,
+																	model.getResult(state, currentAction),
+																	alpha, beta, !isMaxPlayer);
+
+				if(bestUtility.compareTo(opponentUtility) < 0){
+					bestUtility = opponentUtility;
+
+					if(alpha.compareTo(bestUtility) < 0) {
+						//do nothing, alpha is still the larger one
+					}else {
+						alpha = bestUtility;
+					}
 				}
-				if(alpha > score) {
-					//do nothing, alpha is still the larger one
-				}else {
-					alpha = score;
-				}
-				if(alpha >= beta) {
+
+				if(alpha.compareTo(beta) >= 0) {
 					break;//beta cut-off
 				}
 			}
 		}else {//is minP  layer
-			score = Double.MAX_VALUE;
+			bestUtility = worstUtilityForMinimizingPlayer;
 			ActionClass[] validActions = model.getActions(state);
 			for(ActionClass currentAction : validActions) {
 				//score is the max of the ab of the child
 				//score = max(score, ab(child, a, b, !isMaxPlayer))
-				Double tempScore = miniMaxAlphaBetaHelp(model, model.getResult(state, currentAction), alpha, beta, !isMaxPlayer);
-				if(score < tempScore) {
-					//do nothing, score is still larger
-				}else {
-					score = tempScore;
+				UtilityValue opponentUtility = miniMaxAlphaBetaHelp(model,
+																	model.getResult(state, currentAction),
+																	alpha, beta, !isMaxPlayer);
+
+				if(bestUtility.compareTo(opponentUtility) > 0){
+					bestUtility = opponentUtility;
+
+					if(beta.compareTo(bestUtility) > 0) {
+						//do nothing, alpha is still the larger one
+					}else {
+						alpha = bestUtility;
+					}
 				}
-				if(beta < score) {
-					//do nothing, alpha is still the larger one
-				}else {
-					beta = score;
-				}
-				if(alpha >= beta) {
+
+				if(alpha.compareTo(beta) >= 0) {
 					break;//beta cut-off
 				}
 			}
 		}
-		return score;
+
+		return bestUtility;
 	}
 
 	public ActionClass h_miniMax_a_b(Model<StateClass, ActionClass> model, StateClass state){

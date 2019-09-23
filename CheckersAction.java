@@ -84,6 +84,7 @@ public class CheckersAction implements Action {
 		return true;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder actionString = new StringBuilder("");
 

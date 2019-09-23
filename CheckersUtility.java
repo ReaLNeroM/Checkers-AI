@@ -1,6 +1,6 @@
 public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
 	private CheckersActions checkersActionsImplementation = new CheckersActions();
-	private Integer numberOfMovesForTie = 24;
+	private Integer numberOfMovesForTie = 25;
 
 	private int maxSearchDepth = 8;
 	public int Utility(CheckersState state){

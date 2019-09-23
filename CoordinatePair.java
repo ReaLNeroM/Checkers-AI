@@ -37,7 +37,8 @@ public class CoordinatePair {
                columnNumber == comparisonCoordinatePair.getColumnNumber();
     }
 
-    public String toString(String pairString){
+	@Override
+    public String toString(){
         Character rowCharacter = Character.valueOf((char) ((int) 'A' + rowNumber));
         Character columnCharacter = Character.valueOf((char) ((int) '1' + columnNumber));
         return rowCharacter.toString() + columnCharacter.toString();

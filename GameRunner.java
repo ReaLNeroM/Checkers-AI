@@ -20,19 +20,19 @@ public class GameRunner {
 		CheckersState resultingState;
 		boolean isFirstPlayerMove = true;
 		do {
-			if(isFirstPlayerMove) {
-				nextAction = makeMove(model, currentState, aiInstance, firstPlayer);
-			}else {
-				nextAction = makeMove(model, currentState, aiInstance, secondPlayer);
+			nextAction = makeMove(model, currentState, aiInstance, isFirstPlayerMove ? firstPlayer : secondPlayer);
+			if (nextAction == null) {
+				break;
 			}
+			
 			resultingState = model.getResult(currentState, nextAction);
 			if(resultingState != null) {
-
 				System.out.println(resultingState.toString());
 				currentState = resultingState;
 			} else {
 				break;
 			}
+			
 			currentState = resultingState;
 			isFirstPlayerMove = !isFirstPlayerMove;
 		}while(resultingState != null);
