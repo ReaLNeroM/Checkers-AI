@@ -3,15 +3,15 @@ public class Pair <K, V> {
     private V second;
 
     public Pair(K first, V second){
-    	this.first = first;
-    	this.second = second;
+        this.first = first;
+        this.second = second;
     }
 
     public K getFirst(){
-    	return first;
+        return first;
     }
 
     public V getSecond(){
-    	return second;
+        return second;
     }
 }

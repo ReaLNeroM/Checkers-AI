@@ -58,24 +58,24 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
     	return null;
     }
 
-    public CheckersAction[] getActions(CheckersState state){
-    	return this.ActionsImplementation.Actions(state);
-    }
-    public CheckersState getResult(CheckersState state, CheckersAction action){
-    	return this.ResultImplementation.Result(state, action);
-    }
-    public Integer getCost(CheckersState state, CheckersAction action){
-    	return this.CostImplementation.Cost(state, action);
-    }
-    public Integer getUtility(CheckersState state){
-    	return this.UtilityImplementation.Utility(state);
-    }
-    public Integer getHeuristic(CheckersState state){
-    	return this.HeuristicImplementation.Heuristic(state);
-    }
-    public boolean getIsTerminal(CheckersState state) {
-    	return UtilityImplementation.isTerminal(state);
-    }
+	public CheckersAction[] getActions(CheckersState state){
+		return this.ActionsImplementation.Actions(state);
+	}
+	public CheckersState getResult(CheckersState state, CheckersAction action){
+		return this.ResultImplementation.Result(state, action);
+	}
+	public Integer getCost(CheckersState state, CheckersAction action){
+		return this.CostImplementation.Cost(state, action);
+	}
+	public Integer getUtility(CheckersState state){
+		return this.UtilityImplementation.Utility(state);
+	}
+	public Double getHeuristic(CheckersState state){
+		return this.HeuristicImplementation.Heuristic(state);
+	}
+	public boolean getIsTerminal(CheckersState state) {
+		return UtilityImplementation.isTerminal(state);
+	}
 
     public Actions<CheckersState, CheckersAction> getActionsImplementation() {
     	return ActionsImplementation;
@@ -93,9 +93,7 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
     	return UtilityImplementation;
     }
 
-    public Heuristic<CheckersState, CheckersAction> getHeuristicImplementation() {
-    	return HeuristicImplementation;
-    }
-    
-    
+	public Heuristic<CheckersState, CheckersAction> getHeuristicImplementation() {
+		return HeuristicImplementation;
+	}
 }
