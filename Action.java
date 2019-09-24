@@ -1,3 +1,3 @@
 public interface Action {
-	String toString();
+    String toString();
 }

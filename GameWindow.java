@@ -13,10 +13,10 @@ import java.awt.event.ActionEvent;
 public class GameWindow extends JFrame
 {  // Instantiate a textfield for input and a textarea for output.
    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private JTextField input = new JTextField(10);
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private JTextField input = new JTextField(10);
    private JTextArea output = new JTextArea(10, 10);
 
    private JLabel info = new JLabel("press enter to submit input");
@@ -25,10 +25,10 @@ public class GameWindow extends JFrame
    public GameWindow(String title, GameSetup setup)
    {  // Register a listener with the textfield
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	  this.setTitle(title);
-	  this.getContentPane().setLayout(new BorderLayout());;
+      this.setTitle(title);
+      this.getContentPane().setLayout(new BorderLayout());;
       this.setBackground(Color.LIGHT_GRAY);
-	  TextFieldListener tfListener = new TextFieldListener();
+      TextFieldListener tfListener = new TextFieldListener();
       input.addActionListener(tfListener);
 
       Font font = new Font("Courier", Font.BOLD, 30);
@@ -50,27 +50,27 @@ public class GameWindow extends JFrame
    }
    
    public void drawBlankBoard(int size) {
-	   String[][] board = new String[size+1][size+1];
-	   
-	   for(int i = 0; i < board.length; i++) {
-		   for(int j = 0; j < board[i].length; j++) {
-			   board[i][j] = "[-]";		   
-		   }
-	   }	
-	   
-	   for(int j = 1; j < board[0].length; j++) {
-		   board[0][j] = "{" + j + "}";
-	   }
-	   for(int i = 1; i < board.length; i++) {
-		   board[i][0] = "{" + String.valueOf((char)(i + 64)) + "}";
-	   }
-	   
-	   for(int i = 0; i < board.length; i++) {
-		   for(int j = 0; j < board[i].length; j++) {
-			   output.append(board[i][j]);			   
-		   }
-		   output.append("\n");
-	   }	
+       String[][] board = new String[size+1][size+1];
+       
+       for(int i = 0; i < board.length; i++) {
+    	   for(int j = 0; j < board[i].length; j++) {
+    		   board[i][j] = "[-]";		   
+    	   }
+       }	
+       
+       for(int j = 1; j < board[0].length; j++) {
+    	   board[0][j] = "{" + j + "}";
+       }
+       for(int i = 1; i < board.length; i++) {
+    	   board[i][0] = "{" + String.valueOf((char)(i + 64)) + "}";
+       }
+       
+       for(int i = 0; i < board.length; i++) {
+    	   for(int j = 0; j < board[i].length; j++) {
+    		   output.append(board[i][j]);			   
+    	   }
+    	   output.append("\n");
+       }	
    input.requestFocus();
    }
 
