@@ -47,6 +47,7 @@ public class CheckersHeuristic implements Heuristic <CheckersState, CheckersActi
 			}
 		}
 
+		// Since the heuristic needs to be within [-1, 1], we normalize the piece values by the board area.
 		return totalValue / (2 * board.getSize() * board.getSize());
 	}
 }

@@ -13,11 +13,16 @@ public class GameRunner {
         Scanner scanner = new Scanner(System.in);
         System.out.println("enter a game to simulate: ");
         System.out.println("First Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta, 4 for hMiniMaxAlphaBeta");
-        String firstPlayer = scanner.nextLine();
+        Integer firstPlayer = scanner.nextInt();
         System.out.println("Second Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta, 4 for hMiniMaxAlphaBeta");
-        String secondPlayer = scanner.nextLine();
+        Integer secondPlayer = scanner.nextInt();
         System.out.println("What size board would you like to play: size 4 or size 8");
         Integer boardSize = scanner.nextInt();
+        scanner.close();
+        if (boardSize != 4 && boardSize != 8){
+        	System.out.println("Received board size of " + boardSize + ", which is unsupported.");
+        	System.exit(0);
+        }
 
         CheckersModel model = new CheckersModel();
 
@@ -48,7 +53,7 @@ public class GameRunner {
             }
 
             System.out.println(currentState.toString());
-            System.out.println("Current heuristic utility: " + model.getHeuristic(currentState));
+            System.out.println(String.format("Current heuristic utility: %.5f", model.getHeuristic(currentState)));
         }while(currentState != null);
 
         System.out.println(currentState.toString());
@@ -69,9 +74,10 @@ public class GameRunner {
     private static CheckersAction queryUser(CheckersModel model, CheckersState state){
         CheckersAction userAction = null;
 
+        Scanner userMoveScanner = new Scanner(System.in);
+
         while (userAction == null){
             System.out.print("Enter a move: ");
-            Scanner userMoveScanner = new Scanner(System.in);
             String moveString = userMoveScanner.nextLine();
             userAction = new CheckersAction(moveString);
 
@@ -83,13 +89,15 @@ public class GameRunner {
             }
         }
 
+        userMoveScanner.close();
+
         return userAction;
     }
 
     public static CheckersAction makeMove(CheckersModel model, CheckersState state,
-                                          AI<CheckersState, CheckersAction> ai, String AIType) {
+                                          AI<CheckersState, CheckersAction> ai, Integer AIType) {
         CheckersAction action = null;
-        switch(Integer.valueOf(AIType)){
+        switch(AIType){
             case 0:
                 action = queryUser(model, state);
                 break;
@@ -104,6 +112,10 @@ public class GameRunner {
                 break;
             case 4:
                 action = ai.hMiniMaxAlphaBeta(model, state);
+                break;
+            default:
+            	System.err.println("Received agent type " + AIType + ", which is unsupported.");
+            	System.exit(-1);
         }
         return action;
     }

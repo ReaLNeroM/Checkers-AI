@@ -55,7 +55,7 @@ public class AI <StateClass extends State, ActionClass extends Action> {
     private UtilityValue tieUtilityValue = new UtilityValue(0.0, 0);
     private UtilityValue lossUtilityValue = new UtilityValue(-1.0, 0);
 
-    private Integer depthCutOffToUseHeuristicAt = 5;
+    private Integer depthCutOffToUseHeuristicAt = 4;
     private boolean isAtHeuristicCutoffDepth(Integer searchDepth) {
         return (searchDepth >= depthCutOffToUseHeuristicAt);
     }
