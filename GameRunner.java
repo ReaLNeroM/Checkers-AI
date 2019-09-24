@@ -4,6 +4,12 @@ import java.util.Scanner;
 
 public class GameRunner {
 	public static void main(String args[]) {
+		System.out.println("Welcome to Checkers!");
+		System.out.println("----------");
+		System.out.println("sample input:");
+		System.out.println("\t" + "D1-C2 for a move");
+		System.out.println("\t" + "D1xB3 for a capture");
+		System.out.println("----------");
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("enter a game to simulate: ");
 		System.out.println("First Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta, 4 for hMiniMaxAlphaBeta");
@@ -62,6 +68,9 @@ public class GameRunner {
 	}
 
 	private static CheckersAction queryUser(CheckersModel model, CheckersState state){
+		if(model.getActions(state).length == 0) {
+			return null;//game ends if user has no more valid moves
+		}
 		CheckersAction userAction = null;
 
 		while (userAction == null){

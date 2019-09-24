@@ -59,8 +59,10 @@ public class Board {
 		StringBuilder boardString = new StringBuilder("[\n");
 
 		boardString.append("\t ");
+		boardString.append("/");
 		for(int i = 0; i < size; i++){
-			boardString.append(' ' + Character.toString((char) ('A' + i)));
+			boardString.append('|');
+			boardString.append(Integer.toString(i + 1));
 		}
 		boardString.append('\n');
 
@@ -74,7 +76,7 @@ public class Board {
 			Piece[] rowOfPieces = board[i];
 
 			boardString.append('\t');
-			boardString.append(Integer.toString(i + 1));
+			boardString.append(' ' + Character.toString((char) ('A' + i)));
 			boardString.append('|');
 			for(Piece currentPiece : rowOfPieces){
 				boardString.append(currentPiece.toString());
