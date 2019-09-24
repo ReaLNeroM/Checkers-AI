@@ -70,7 +70,7 @@ public class GameRunner {
         CheckersAction userAction = null;
 
         while (userAction == null){
-            System.out.println("Enter a move: ");
+            System.out.print("Enter a move: ");
             Scanner userMoveScanner = new Scanner(System.in);
             String moveString = userMoveScanner.nextLine();
             userAction = new CheckersAction(moveString);

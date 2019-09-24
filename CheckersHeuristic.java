@@ -3,6 +3,10 @@ import java.lang.Math;
 public class CheckersHeuristic implements Heuristic <CheckersState, CheckersAction> {
 	private Double getPieceValue(CoordinatePair location, Piece piece, Integer boardSize){
 		Double pieceValue = 0.0;
+		if(piece.isEmpty()){
+			return pieceValue;
+		}
+
 		if(piece.getIsKing()){
 			// Kings have much better mobility, so this is factored in as a doubling of value.
 			pieceValue = 2.0;
@@ -43,6 +47,6 @@ public class CheckersHeuristic implements Heuristic <CheckersState, CheckersActi
 			}
 		}
 
-		return totalValue / (4 * board.getSize() * board.getSize());
+		return totalValue / (2 * board.getSize() * board.getSize());
 	}
 }
