@@ -78,7 +78,7 @@ public class AI <StateClass extends State, ActionClass extends Action> {
 		}
 
 		ActionClass[] validActions = model.getActions(state);
-		UtilityValue bestUtility = worstUtilityForMinimizingPlayer;
+		UtilityValue bestUtility = worstUtilityForMaximizingPlayer;
 
 		ActionClass bestMove = null;
 		for(int i = 0; i < validActions.length; i++) {
