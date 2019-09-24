@@ -76,4 +76,26 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
 	public boolean getIsTerminal(CheckersState state) {
 		return UtilityImplementation.isTerminal(state);
 	}
+
+	public Actions<CheckersState, CheckersAction> getActionsImplementation() {
+		return ActionsImplementation;
+	}
+
+	public Result<CheckersState, CheckersAction> getResultImplementation() {
+		return ResultImplementation;
+	}
+
+	public Cost<CheckersState, CheckersAction> getCostImplementation() {
+		return CostImplementation;
+	}
+
+	public Utility<CheckersState, CheckersAction> getUtilityImplementation() {
+		return UtilityImplementation;
+	}
+
+	public Heuristic<CheckersState, CheckersAction> getHeuristicImplementation() {
+		return HeuristicImplementation;
+	}
+	
+	
 }

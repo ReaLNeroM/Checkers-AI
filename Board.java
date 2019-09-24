@@ -92,4 +92,28 @@ public class Board {
 		boardString.append("]");
 		return boardString.toString();
 	}
+	
+	public int getNumWhite() {
+		int numWhite = 0;
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				if(board[i][j].getOwner().toInteger() == 1) {
+					numWhite++;
+				}
+			}
+		}
+		return numWhite;
+	}
+	
+	public int getNumBlack() {
+		int numBlack = 0;
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				if(board[i][j].getOwner().toInteger() == 2) {
+					numBlack++;
+				}
+			}
+		}
+		return numBlack;
+	}
 }

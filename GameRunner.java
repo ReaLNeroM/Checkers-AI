@@ -1,17 +1,21 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class GameRunner {
 	public static void main(String args[]) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("enter a game to simulate: ");
-		System.out.println("First Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta");
+		System.out.println("First Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta, 4 for hMiniMaxAlphaBeta");
 		String firstPlayer = scanner.nextLine();
-		System.out.println("Second Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta");
+		System.out.println("Second Player: 0 for human player, 1 for random, 2 for miniMax, 3 for miniMaxAlphaBeta, 4 for hMiniMaxAlphaBeta");
 		String secondPlayer = scanner.nextLine();
+		System.out.println("What size board would you like to play: size 4 or size 8");
+		Integer boardSize = scanner.nextInt();
 
 		CheckersModel model = new CheckersModel();
 
-		CheckersState currentState = model.getInitialState(4);
+		CheckersState currentState = model.getInitialState(boardSize);
 		System.out.println(currentState.toString());
 
 		AI<CheckersState, CheckersAction> aiInstance = new AI<CheckersState, CheckersAction>();
@@ -19,6 +23,12 @@ public class GameRunner {
 		CheckersAction nextAction;
 		CheckersState resultingState;
 		boolean isFirstPlayerMove = true;
+		
+		System.out.println("--Game Start! time: ");
+		DateTimeFormatter dtfStart = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now1 = LocalDateTime.now();  
+		System.out.println(dtfStart.format(now1));  
+		
 		do {
 			nextAction = makeMove(model, currentState, aiInstance, isFirstPlayerMove ? firstPlayer : secondPlayer);
 			if (nextAction == null) {
@@ -44,6 +54,11 @@ public class GameRunner {
 		} else {
 			System.out.println("Tie!");
 		}
+		
+		System.out.println("--Game End! time: ");
+		DateTimeFormatter dtfEnd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now2 = LocalDateTime.now();  
+		System.out.println(dtfEnd.format(now2));  
 	}
 
 	private static CheckersAction queryUser(CheckersModel model, CheckersState state){
@@ -82,6 +97,8 @@ public class GameRunner {
 			case 3:
 				action = ai.miniMax_a_b(model, state);
 				break;
+			case 4:
+				action = ai.hMiniMaxAlphaBeta(model, state);
 		}
 		return action;
 	}
