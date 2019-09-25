@@ -1,8 +1,7 @@
 CSC242: Project 1
 
 Authors:
-	Vladimir Maksimovski
-	Rowland Zhang
+	Vladimir Maksimovski	Rowland Zhang
 
 How to build project:
 	import to Eclipse
