@@ -65,7 +65,7 @@ public class CheckersGame {
         // read in a blank line, to ensure all input gets processed. nextInt() only consumes the
         // digits, not the \n character.
         @SuppressWarnings("unused")
-		String blankLine = scanner.nextLine();
+        String blankLine = scanner.nextLine();
 
         model = new CheckersModel(numberOfMovesForTie);
         currentState = model.getInitialState(boardSize);

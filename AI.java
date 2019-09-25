@@ -68,7 +68,6 @@ public class AI <StateClass extends State, ActionClass extends Action> {
 
     public ActionClass randomPlay(Model<StateClass, ActionClass> model, StateClass state){
         ActionClass[] validActions = model.getActions(state);
-
         if(validActions.length == 0){
             return null;
         }

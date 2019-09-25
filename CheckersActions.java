@@ -216,6 +216,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
 
             if(currentPartialAction.getNumberOfCaptures() > mostCapturesPossible){
                 validMoves.clear();
+                mostCapturesPossible = currentPartialAction.getNumberOfCaptures();
             }
             if(
                 currentPartialAction.getNumberOfJumps() != 0 &&

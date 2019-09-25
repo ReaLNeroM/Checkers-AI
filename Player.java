@@ -48,8 +48,8 @@ public class Player {
                 return new Player(Color.SECOND);
             case SECOND:
                 return new Player(Color.FIRST);
-			default:
-				return new Player(Color.BLANK);
+            default:
+                return new Player(Color.BLANK);
         }
 
     }
@@ -64,8 +64,8 @@ public class Player {
                 return 1;
             case SECOND:
                 return 2;
-			default:
-				return 0;
+            default:
+                return 0;
         }
     }
 
