@@ -22,10 +22,32 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
             }
         }
 
-        boardPieces[1][0] = new Piece(new Player(1), true);
-        boardPieces[2][1] = new Piece(new Player(2), true);
-        boardPieces[1][2] = new Piece(new Player(2), true);
-        boardPieces[2][3] = new Piece(new Player(1), true);
+        for(int i = 0; i < (boardSize/2)-1; i++) {
+            for(int j = 0; j < boardSize; j++) {
+                if(i%2==0) {
+                    if(j%2!=0) {
+                        boardPieces[i][j] = new Piece(new Player(2));
+                    }
+                }else {
+                    if(j%2==0) {
+                        boardPieces[i][j] = new Piece(new Player(2));
+                    }
+                }
+            }
+        }//black side
+        for(int i = boardSize-1; i >= (boardSize/2)+1; i--) {
+            for(int j = 0; j < boardSize; j++) {
+                if(i%2!=0) {
+                    if(j%2==0) {
+                        boardPieces[i][j] = new Piece(new Player(1));
+                    }
+                }else {
+                    if(j%2!=0) {
+                        boardPieces[i][j] = new Piece(new Player(1));
+                    }
+                }
+            }
+        }//white side
 
         if(boardSize == 4){
             return new CheckersState(new Board(boardPieces), new Player(1));
