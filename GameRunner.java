@@ -20,8 +20,8 @@ public class GameRunner {
         Integer boardSize = scanner.nextInt();
         scanner.close();
         if (boardSize != 4 && boardSize != 8){
-        	System.out.println("Received board size of " + boardSize + ", which is unsupported.");
-        	System.exit(0);
+            System.out.println("Received board size of " + boardSize + ", which is unsupported.");
+            System.exit(0);
         }
 
         CheckersModel model = new CheckersModel();
@@ -114,8 +114,8 @@ public class GameRunner {
                 action = ai.hMiniMaxAlphaBeta(model, state);
                 break;
             default:
-            	System.err.println("Received agent type " + AIType + ", which is unsupported.");
-            	System.exit(-1);
+                System.err.println("Received agent type " + AIType + ", which is unsupported.");
+                System.exit(-1);
         }
         return action;
     }

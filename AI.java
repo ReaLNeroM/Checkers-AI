@@ -189,7 +189,7 @@ public class AI <StateClass extends State, ActionClass extends Action> {
                 //score is the max of the ab of the child
                 //score = max(score, ab(child, a, b, !isMaxPlayer))
                 UtilityValue opponentUtility = miniMaxAlphaBetaHelp(
-                	model, model.getResult(state, currentAction), alpha, beta, !isMaxPlayer
+                    model, model.getResult(state, currentAction), alpha, beta, !isMaxPlayer
                 );
 
                 if(bestUtility.compareTo(opponentUtility) < 0){
@@ -213,7 +213,7 @@ public class AI <StateClass extends State, ActionClass extends Action> {
                 //score is the max of the ab of the child
                 //score = max(score, ab(child, a, b, !isMaxPlayer))
                 UtilityValue opponentUtility = miniMaxAlphaBetaHelp(
-                	model, model.getResult(state, currentAction), alpha, beta, !isMaxPlayer
+                    model, model.getResult(state, currentAction), alpha, beta, !isMaxPlayer
                 );
 
                 if(bestUtility.compareTo(opponentUtility) > 0){
