@@ -62,8 +62,9 @@ public class AI <StateClass extends State, ActionClass extends Action> {
         return (searchDepth >= depthCutOffToUseHeuristicAt);
     }
 
-    public AI(){
+    public AI(Integer depthCutOffToUseHeuristicAt){
         randomGenerator = new Random();
+        this.depthCutOffToUseHeuristicAt = depthCutOffToUseHeuristicAt;
     }
 
     public ActionClass randomPlay(Model<StateClass, ActionClass> model, StateClass state){
