@@ -20,7 +20,6 @@ public class CheckersAction implements Action {
             Character isCaptureCharacter = JumpString.charAt(3 * i + 2);
             boolean isCapture = (isCaptureCharacter == 'x');
 
-            Jump nextJump = null;
             if(isCapture){
                 // If a move is a capture, we know the capture happened in the cell between the
                 // initialPosition and targetPosition.

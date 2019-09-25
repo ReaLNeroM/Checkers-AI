@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.PriorityQueue;
 import java.util.Random;
 
 public class AI <StateClass extends State, ActionClass extends Action> {

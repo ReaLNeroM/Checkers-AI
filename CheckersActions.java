@@ -131,6 +131,7 @@ public class CheckersActions implements Actions <CheckersState, CheckersAction> 
         if(partialAction.getNumberOfJumps() != 0){
             Jump lastJump = partialAction.getJumps()[partialAction.getJumps().length - 1];
             CoordinatePair initialPosition = new CoordinatePair(lastJump.getTargetPosition());
+            captureInitialPositions.add(initialPosition);
         } else {
             for(int i = 0; i < currentBoard.getSize(); i++){
                 for(int j = 0; j < currentBoard.getSize(); j++){

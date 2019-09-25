@@ -48,9 +48,10 @@ public class Player {
                 return new Player(Color.SECOND);
             case SECOND:
                 return new Player(Color.FIRST);
+			default:
+				return new Player(Color.BLANK);
         }
 
-        return new Player(Color.BLANK);
     }
 
     public boolean equals(Player comparisonPlayer) {
@@ -63,9 +64,9 @@ public class Player {
                 return 1;
             case SECOND:
                 return 2;
+			default:
+				return 0;
         }
-
-        return 0;
     }
 
     public String toString(){
