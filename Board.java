@@ -61,10 +61,10 @@ public class Board {
         boardString.append("\t");
         boardString.append("/");
         for(int i = 0; i < size; i++){
-            boardString.append('|');
+            boardString.append(' ');
             boardString.append(Integer.toString(i + 1));
         }
-        boardString.append("|\n");
+        boardString.append(" \n");
 
         boardString.append("\t ");
         for(int j = 0; j < size; j++){

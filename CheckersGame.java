@@ -70,8 +70,8 @@ public class CheckersGame {
         model = new CheckersModel(numberOfMovesForTie);
         currentState = model.getInitialState(boardSize);
         if(boardSize == 4){
-            // for 4x4 checkers, we can explore 21 moves deep in a second.
-            aiInstance = new AI<CheckersState, CheckersAction>(21);
+            // for 4x4 checkers, we can explore 15 moves deep in a second.
+            aiInstance = new AI<CheckersState, CheckersAction>(15);
         } else {
             // for 8x8 checkers, we can explore 4 moves deep in a second.
             aiInstance = new AI<CheckersState, CheckersAction>(4);
