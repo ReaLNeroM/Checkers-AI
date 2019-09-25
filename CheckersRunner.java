@@ -18,49 +18,43 @@ public class CheckersRunner {
     private CheckersState currentState = null;
     AI<CheckersState, CheckersAction> aiInstance = null;
 
+    private Agent promptUserForAgent(Scanner scanner){
+        System.out.println("0 for human player, 1 for random, 2 for minimax," +
+                           " 3 for minimax-AlphaBeta, 4 for minimax-AlphaBeta-Heuristic");
+
+        Agent playerAgent = null;
+        Integer playerNumber = scanner.nextInt();
+        if(playerNumber == 0){
+            playerAgent = Agent.Human;
+        } else if(playerNumber == 1){
+            playerAgent = Agent.Random;
+        } else if(playerNumber == 2){
+            playerAgent = Agent.Minimax;
+        } else if(playerNumber == 3){
+            playerAgent = Agent.MinimaxAlphaBeta;
+        } else if(playerNumber == 4){
+            playerAgent = Agent.MinimaxAlphaBetaHeuristic;
+        } else {
+            System.err.println("Received agent type " + playerNumber +
+                               ", which is unsupported.");
+            System.exit(-1);
+        }
+
+        return playerAgent;
+    }
+
     public void setupNewGame(){
         System.out.println("Welcome to Checkers!");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("enter a game to simulate: ");
-        System.out.println("First Player: 0 for human player, 1 for random, 2 for minimax," +
-                           " 3 for minimax-AlphaBeta, 4 for minimax-AlphaBeta-Heuristic");
+        System.out.println("Enter a game to simulate: ");
+        System.out.print("How many moves until a tie occurs: ");
+        Integer numberOfMovesForTie = scanner.nextInt();
 
-        Integer firstPlayerNumber = scanner.nextInt();
-        if(firstPlayerNumber == 0){
-            firstPlayer = Agent.Human;
-        } else if(firstPlayerNumber == 1){
-            firstPlayer = Agent.Random;
-        } else if(firstPlayerNumber == 2){
-            firstPlayer = Agent.Minimax;
-        } else if(firstPlayerNumber == 3){
-            firstPlayer = Agent.MinimaxAlphaBeta;
-        } else if(firstPlayerNumber == 4){
-            firstPlayer = Agent.MinimaxAlphaBetaHeuristic;
-        } else {
-            System.err.println("Received agent type " + firstPlayerNumber +
-                               ", which is unsupported.");
-            System.exit(-1);
-        }
+        System.out.println("Enter First Player.");
+        firstPlayer = promptUserForAgent(scanner);
 
-        System.out.println("Second Player: 0 for human player, 1 for random, 2 for miniMax," +
-                           " 3 for minimax-AlphaBeta, 4 for minimax-AlphaBeta-Heuristic");
-
-        Integer secondPlayerNumber = scanner.nextInt();
-        if(secondPlayerNumber == 0){
-            secondPlayer = Agent.Human;
-        } else if(secondPlayerNumber == 1){
-            secondPlayer = Agent.Random;
-        } else if(secondPlayerNumber == 2){
-            secondPlayer = Agent.Minimax;
-        } else if(secondPlayerNumber == 3){
-            secondPlayer = Agent.MinimaxAlphaBeta;
-        } else if(secondPlayerNumber == 4){
-            secondPlayer = Agent.MinimaxAlphaBetaHeuristic;
-        } else {
-            System.err.println("Received agent type " + secondPlayerNumber +
-                               ", which is unsupported.");
-            System.exit(-1);
-        }
+        System.out.println("Enter Second Player.");
+        secondPlayer = promptUserForAgent(scanner);
 
         System.out.println("What size board would you like to play: size 4 or size 8");
         Integer boardSize = scanner.nextInt();
@@ -70,7 +64,7 @@ public class CheckersRunner {
             System.exit(0);
         }
 
-        model = new CheckersModel();
+        model = new CheckersModel(numberOfMovesForTie);
         currentState = model.getInitialState(boardSize);
         aiInstance = new AI<CheckersState, CheckersAction>();
     }

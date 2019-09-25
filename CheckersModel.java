@@ -5,11 +5,11 @@ public class CheckersModel implements Model <CheckersState, CheckersAction> {
     Utility<CheckersState, CheckersAction> UtilityImplementation;
     Heuristic<CheckersState, CheckersAction> HeuristicImplementation;
 
-    public CheckersModel(){
+    public CheckersModel(Integer numberOfMovesForTie){
         this.ActionsImplementation = new CheckersActions();
         this.ResultImplementation = new CheckersResult();
         this.CostImplementation = new CheckersCost();
-        this.UtilityImplementation = new CheckersUtility();
+        this.UtilityImplementation = new CheckersUtility(numberOfMovesForTie);
         this.HeuristicImplementation = new CheckersHeuristic();
     }
 

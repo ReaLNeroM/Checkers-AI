@@ -54,7 +54,8 @@ public class CheckersHeuristic implements Heuristic <CheckersState, CheckersActi
         Double totalValue = 0.0;
         for(int i = 0; i < boardPieces.length; i++){
             for(int j = 0; j < boardPieces[i].length; j++){
-                totalValue += getPieceValue(new CoordinatePair(i, j), boardPieces[i][j], board.getSize());
+                totalValue += getPieceValue(new CoordinatePair(i, j), boardPieces[i][j],
+                                            board.getSize());
             }
         }
 

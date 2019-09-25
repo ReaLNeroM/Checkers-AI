@@ -2,6 +2,10 @@ public class CheckersUtility implements Utility<CheckersState, CheckersAction> {
     private CheckersActions checkersActionsImplementation = new CheckersActions();
     private Integer numberOfMovesForTie = 200;
 
+    public CheckersUtility(Integer numberOfMovesForTie){
+        this.numberOfMovesForTie = numberOfMovesForTie;
+    }
+
     public int Utility(CheckersState state){
         CheckersAction[] possibleActions = checkersActionsImplementation.Actions(state);
 
