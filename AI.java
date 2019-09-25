@@ -50,8 +50,12 @@ public class AI <StateClass extends State, ActionClass extends Action> {
         }
     }
 
-    private UtilityValue worstUtilityForMaximizingPlayer = new UtilityValue(Double.NEGATIVE_INFINITY, 0);
-    private UtilityValue worstUtilityForMinimizingPlayer = new UtilityValue(Double.POSITIVE_INFINITY, 0);
+    private UtilityValue worstUtilityForMaximizingPlayer = new UtilityValue(
+        Double.NEGATIVE_INFINITY, 0
+    );
+    private UtilityValue worstUtilityForMinimizingPlayer = new UtilityValue(
+        Double.POSITIVE_INFINITY, 0
+    );
     private UtilityValue tieUtilityValue = new UtilityValue(0.0, 0);
     private UtilityValue lossUtilityValue = new UtilityValue(-1.0, 0);
 
@@ -89,7 +93,9 @@ public class AI <StateClass extends State, ActionClass extends Action> {
         for(int i = 0; i < validActions.length; i++) {
             StateClass currentState = model.getResult(state, validActions[i]);
             UtilityValue opponentUtility = miniMaxHelp(model, currentState);
-            UtilityValue resultingUtilityOfAction = opponentUtility.getOpponentUtilityValue(model.getCost(state, validActions[i]));
+            UtilityValue resultingUtilityOfAction = opponentUtility.getOpponentUtilityValue(
+                model.getCost(state, validActions[i])
+            );
 
             if(bestUtility.compareTo(resultingUtilityOfAction) < 0) {
                 bestUtility = resultingUtilityOfAction;
@@ -122,7 +128,9 @@ public class AI <StateClass extends State, ActionClass extends Action> {
             StateClass currentState = model.getResult(state, validActions[i]);
 
             UtilityValue opponentUtility = miniMaxHelp(model, currentState);
-            UtilityValue resultingUtilityOfAction = opponentUtility.getOpponentUtilityValue(model.getCost(state, validActions[i]));
+            UtilityValue resultingUtilityOfAction = opponentUtility.getOpponentUtilityValue(
+                model.getCost(state, validActions[i])
+            );
 
             if(bestUtility.compareTo(resultingUtilityOfAction) < 0) {
                 bestUtility = resultingUtilityOfAction;
@@ -278,7 +286,8 @@ public class AI <StateClass extends State, ActionClass extends Action> {
 
     private UtilityValue hMiniMaxAlphaBetaHelp(Model<StateClass, ActionClass> model,
                                                StateClass state, UtilityValue alpha,
-                                               UtilityValue beta, boolean isMaxPlayer, Integer searchDepth){
+                                               UtilityValue beta, boolean isMaxPlayer,
+                                               Integer searchDepth){
         if(model.getIsTerminal(state)) {
             Double output = Double.valueOf(model.getUtility(state));
             return new UtilityValue(output, 0);
@@ -296,9 +305,10 @@ public class AI <StateClass extends State, ActionClass extends Action> {
             for(ActionClass currentAction : validActions) {
                 //score is the max of the ab of the child
                 //score = max(score, ab(child, a, b, !isMaxPlayer))
-                UtilityValue opponentUtility = hMiniMaxAlphaBetaHelp(model,
-                                                                     model.getResult(state, currentAction),
-                                                                     alpha, beta, !isMaxPlayer, searchDepth+1);
+                UtilityValue opponentUtility = hMiniMaxAlphaBetaHelp(
+                    model, model.getResult(state, currentAction), alpha, beta,
+                    !isMaxPlayer, searchDepth+1
+                );
 
                 if(bestUtility.compareTo(opponentUtility) < 0){
                     bestUtility = opponentUtility;
@@ -320,9 +330,10 @@ public class AI <StateClass extends State, ActionClass extends Action> {
             for(ActionClass currentAction : validActions) {
                 //score is the max of the ab of the child
                 //score = max(score, ab(child, a, b, !isMaxPlayer))
-                UtilityValue opponentUtility = hMiniMaxAlphaBetaHelp(model,
-                                                                     model.getResult(state, currentAction),
-                                                                     alpha, beta, !isMaxPlayer, searchDepth+1);
+                UtilityValue opponentUtility = hMiniMaxAlphaBetaHelp(
+                    model, model.getResult(state, currentAction), alpha, beta,
+                    !isMaxPlayer, searchDepth+1
+                );
 
                 if(bestUtility.compareTo(opponentUtility) > 0){
                     bestUtility = opponentUtility;

@@ -68,7 +68,7 @@ public class Board {
 
         boardString.append("\t ");
         for(int j = 0; j < size; j++){
-            boardString.append("+—");
+            boardString.append("+~");
         }
         boardString.append("+\n");
 
@@ -86,7 +86,7 @@ public class Board {
 
             boardString.append("\t ");
             for(int j = 0; j < size; j++){
-                boardString.append("+—");
+                boardString.append("+~");
             }
             boardString.append("+\n");
         }
